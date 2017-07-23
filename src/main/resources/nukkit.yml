@@ -1,0 +1,35 @@
+name: MoneySAPI
+main: net.comorevi.moneyapi.MoneySAPI
+version: 1.1.2
+load: POSTWORLD
+author: popkechupki
+api: ["1.0.0"]
+description: "Nukkitの基本経済プラグイン"
+
+commands: 
+  mcheck: 
+    description: 自分の所持金を確認します。
+  msee: 
+    description: 指定したユーザーの所持金を確認します。
+    usage: "/msee <ユーザー名>"
+  mpay: 
+    description: 指定したユーザーに指定した金額を支払います。
+    usage: "/mpay <ユーザー名> <金額>"
+  mgive: 
+    description: 指定したユーザーに指定した金額を与えます。
+    usage: "/mgive <ユーザー名> <金額>"
+    permission: op
+  mtake: 
+    description: 指定したユーザーから指定した金額を没収します。
+    usage: "/mtake <ユーザー名> <金額>"
+    permission: op
+  mtop:
+    description: 所持金ランキングを表示します。
+  mset: 
+    description: 指定したユーザーの所持金を指定した金額に変更します。
+    usage: "/mset <ユーザー名> <金額>"
+    permission: op
+  mdebt: 
+    description: 指定した金額を借り入れます。(未実装）
+  stock: 
+    description: 株取引を行います。(未実装)
