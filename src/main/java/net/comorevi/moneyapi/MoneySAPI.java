@@ -1,10 +1,9 @@
 package net.comorevi.moneyapi;
 
-import net.comorevi.moneyapi.SQLiteManager;
-import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.Player;
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
+import cn.nukkit.plugin.PluginBase;
 
 /**
  * Money System API
@@ -22,23 +21,23 @@ import cn.nukkit.command.CommandSender;
  */
 
 public class MoneySAPI extends PluginBase{
-	
+
 	private static MoneySAPI instance;
 	private SQLiteManager sql;
-	private String unit = "MS";
-	
+	private static final String unit = "MS";
+
 	public static MoneySAPI getInstance(){
 		return instance;
 	}
-	
+
 	public void createAccount(Player player, int defaultMoney){
 		sql.createAccount(player.getName(), defaultMoney);
 	}
-	
+
 	public int getMoney(Player player){
 		return sql.getMoney(player.getName());
 	}
-	
+
 	public void setMoney(Player player, int value){
 		try {
 			sql.setMoney(player.getName(), value);
@@ -47,15 +46,15 @@ public class MoneySAPI extends PluginBase{
 			 getServer().getLogger().critical("プレイヤーによる数値の入力でエラーが発生しました。");
 		}
 	}
-	
+
 	public void addMoney(Player player, int value){
 		sql.addMoney(player.getName(), value);
 	}
-	
+
 	public void grantMoney(Player player, int value){
 		sql.addMoney(player.getName(), value);
 	}
-	
+
 	@Override
 	public void onEnable(){
 		getDataFolder().mkdirs();
@@ -63,12 +62,12 @@ public class MoneySAPI extends PluginBase{
 		new EventListener(this);
 		getServer().getPluginManager().registerEvents(new EventListener(this), this);
 	}
-	
+
 	@Override
 	public void onDisable(){
 		sql.unLoadSqlite("userdata", "data");
 	}
-	
+
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
 		switch(command.getName()){
@@ -106,7 +105,7 @@ public class MoneySAPI extends PluginBase{
 		}
 		return true;
 	}
-	
+
 	public SQLiteManager getSQL(){
 		return this.sql;
 	}
