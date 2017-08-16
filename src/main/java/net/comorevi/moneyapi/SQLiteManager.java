@@ -1,5 +1,7 @@
 package net.comorevi.moneyapi;
 
+import net.comorevi.moneyapi.MoneySAPI;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -19,43 +21,40 @@ public class SQLiteManager {
 	
 	public boolean isRegister(String username){
 		try {
-			if(statement.executeQuery("select count * from data where username = '" + username + "'") != null){
-				return true;
+			if(statement.executeQuery("select * from data where username = '" + username + "'") != null) {
+				//plugin.getServer().getLogger().info("false");
+				return false;
 			}
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		}
-		return false;
+		//plugin.getServer().getLogger().info("true");
+		return true;
 	}
 	
-	public boolean createAccount(String username, double defaultMoney){
+	public void createAccount(String username, double defaultMoney){
 		if(!isRegister(username)){
 			try {
 				statement.executeUpdate("insert into data values('" + username + "', " + defaultMoney + ")");
-				return true;//作成した
+				//plugin.getServer().getLogger().info("アカウント作成");
 			} catch (SQLException e) {
 				System.err.println(e.getMessage());
 			}
-		}else{
-			return false;//作成しなかった
 		}
-		return false;//作成しなかった
 	}
 	
 	public int getMoney(String username){
-		if(isRegister(username)){
+		ResultSet rs;
+		if(!isRegister(username)) {
 			try {
-				ResultSet rs = statement.executeQuery("select * from data where username = '" + username + "'");
-				while(rs.next()){
-					return rs.getInt("money");
-				}
-				rs.close();
+				rs = statement.executeQuery("select * from data where username = '" + username + "'");
+				//plugin.getServer().getLogger().info("所持金取得");
+				return rs.getInt("money");
 			} catch (SQLException e) {
 				System.err.println(e.getMessage());
 			}
-		} else {
-			return 0;
 		}
+		//plugin.getServer().getLogger().info("not所持金取得");
 		return 0;
 	}
 	

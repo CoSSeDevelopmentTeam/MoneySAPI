@@ -7,7 +7,7 @@ import cn.nukkit.event.player.PlayerJoinEvent;
 public class EventListener implements Listener{
 
     private MoneySAPI plugin;
-    private int defaultmoney = 5000;
+    private int defaultmoney = 500;
 
     public EventListener(MoneySAPI plugin) {
         this.plugin = plugin;
