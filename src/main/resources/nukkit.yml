@@ -1,6 +1,6 @@
 name: MoneySAPI
 main: net.comorevi.moneyapi.MoneySAPI
-version: 1.1.2
+version: 1.1.3
 load: POSTWORLD
 author: popkechupki
 api: ["1.0.0"]
