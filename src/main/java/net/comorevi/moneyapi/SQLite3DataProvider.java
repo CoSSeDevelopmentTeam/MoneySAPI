@@ -13,6 +13,7 @@ public class SQLite3DataProvider {
 	private MoneySAPI plugin;
 	private Connection connection;
 	private Statement statement;
+	private boolean allowprint = false;
 	
 	public SQLite3DataProvider(MoneySAPI plugin){
 		this.plugin = plugin;
@@ -31,6 +32,9 @@ public class SQLite3DataProvider {
 				statement.setQueryTimeout(30);
 				
 				statement.executeUpdate("create table if not exists money (id integer primary key autoincrement, username text not null, money integer not null)");
+				if(allowprint = true){
+					printAllData();
+				}
 		   }
 		   catch(SQLException e) {
 			   // if the error message is "out of memory",
@@ -57,13 +61,6 @@ public class SQLite3DataProvider {
 		if(!existsAccount(username)) {
 			try {
 				statement.executeUpdate("insert into money(username, money) values('"+ username +"', "+ defaultmoney +")");
-				ResultSet rs = statement.executeQuery("select * from money");
-				while(rs.next()) {
-					System.out.println("id = " + rs.getInt("id"));
-					System.out.println("username = " + rs.getString("username"));
-					System.out.println("money = " + rs.getString("money"));
-				}
-				rs.close();
 			} catch (SQLException e) {
 				System.err.println(e.getMessage());
 			}
@@ -121,6 +118,20 @@ public class SQLite3DataProvider {
 	public void payMoney(String username, String targetname, int value) {
 		reduceMoney(username, value);
 		addMoney(targetname, value);
+	}
+	
+	public void printAllData() {
+		try {
+			ResultSet rs = statement.executeQuery("select * from money");
+			while(rs.next()) {
+				System.out.println("id = " + rs.getInt("id"));
+				System.out.println("username = " + rs.getString("username"));
+				System.out.println("money = " + rs.getString("money"));
+			}
+			rs.close();
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		}
 	}
 	
 	public void unLoadSqlite(){
