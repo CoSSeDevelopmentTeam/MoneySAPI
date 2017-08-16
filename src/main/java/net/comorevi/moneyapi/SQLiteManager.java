@@ -45,7 +45,7 @@ public class SQLiteManager {
 	public int getMoney(String username){
 		if(isRegister(username)){
 			try {
-				ResultSet rs = statement.executeQuery("select * from data where username = '" + username + "'");
+				ResultSet rs = statement.executeQuery("select money from data where username = '" + username + "'");
 				while(rs.next()){
 					return rs.getInt("money");
 				}
