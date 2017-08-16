@@ -16,6 +16,7 @@ public class EventListener implements Listener{
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
         plugin.getSQL().createAccount(event.getPlayer().getName(), this.defaultmoney);
+    	plugin.getSQL().createAccount(event.getPlayer().getName(), this.defaultmoney);
         if(!plugin.getSQL().existsAccount(event.getPlayer().getName())){
             plugin.getServer().broadcastMessage("[MoneySAPI]次のプレイヤーのアカウントを作成しました。 \n"+" - "+event.getPlayer().getName());
         }else{
