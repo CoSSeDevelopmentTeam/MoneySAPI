@@ -24,7 +24,7 @@ public class MoneySAPI extends PluginBase{
 
 	private static MoneySAPI instance;
 	private SQLiteManager sql;
-	private static final String unit = "MS";
+	public static final String unit = "MS";
 
 	public static MoneySAPI getInstance(){
 		return instance;
@@ -59,8 +59,8 @@ public class MoneySAPI extends PluginBase{
 	public void onEnable(){
 		getDataFolder().mkdirs();
 		this.sql = new SQLiteManager(this);
-		new EventListener(this);
-		getServer().getPluginManager().registerEvents(new EventListener(this), this);
+		//new EventListener(this);
+		this.getServer().getPluginManager().registerEvents(new EventListener(this), this);
 	}
 
 	@Override

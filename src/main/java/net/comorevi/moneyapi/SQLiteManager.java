@@ -1,7 +1,5 @@
 package net.comorevi.moneyapi;
 
-import net.comorevi.moneyapi.MoneySAPI;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -21,7 +19,7 @@ public class SQLiteManager {
 	
 	public boolean isRegister(String username){
 		try {
-			if(statement.executeQuery("select count(*) from data where username = '" + username + "'") != null){
+			if(statement.executeQuery("select count * from data where username = '" + username + "'") != null){
 				return true;
 			}
 		} catch (SQLException e) {
@@ -30,20 +28,24 @@ public class SQLiteManager {
 		return false;
 	}
 	
-	public void createAccount(String username, double defaultMoney){
+	public boolean createAccount(String username, double defaultMoney){
 		if(!isRegister(username)){
 			try {
 				statement.executeUpdate("insert into data values('" + username + "', " + defaultMoney + ")");
+				return true;//作成した
 			} catch (SQLException e) {
 				System.err.println(e.getMessage());
 			}
+		}else{
+			return false;//作成しなかった
 		}
+		return false;//作成しなかった
 	}
 	
 	public int getMoney(String username){
 		if(isRegister(username)){
 			try {
-				ResultSet rs = statement.executeQuery("select money from data where username = '" + username + "'");
+				ResultSet rs = statement.executeQuery("select * from data where username = '" + username + "'");
 				while(rs.next()){
 					return rs.getInt("money");
 				}
