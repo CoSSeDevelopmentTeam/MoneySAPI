@@ -18,20 +18,34 @@ import cn.nukkit.plugin.PluginBase;
  *     - すでにアカウントがあるのに新規にアカウントが作成される問題を修正
  *    1.1.2
  *     - すでにアカウントがあるのに新規にアカウントが作成される問題を修正
+ *    1.1.3
+ *     - SQLite関連書き直し
  */
 
 public class MoneySAPI extends PluginBase{
 
 	private static MoneySAPI instance;
-	private SQLiteManager sql;
+	private SQLite3DataProvider sql;
 	public static final String unit = "MS";
+	
+	/**************/
+    /** プラグイン関連  */
+    /**************/
 
 	public static MoneySAPI getInstance(){
 		return instance;
 	}
-
-	public void createAccount(Player player, int defaultMoney){
-		sql.createAccount(player.getName(), defaultMoney);
+	
+	public SQLite3DataProvider getSQL(){
+		return this.sql;
+	}
+	
+	/**************/
+    /** MoneySAPI */
+    /**************/
+	
+	public void createAccount(Player player, int defaultmoney){
+		sql.createAccount(player.getName(), defaultmoney);
 	}
 
 	public int getMoney(Player player){
@@ -54,19 +68,34 @@ public class MoneySAPI extends PluginBase{
 	public void grantMoney(Player player, int value){
 		sql.addMoney(player.getName(), value);
 	}
+	
+	public void payMoney(String username, String targetname, int value) {
+		sql.payMoney(username, targetname, value);
+	}
+	
+	public String getMoneyUnit() {
+		return unit;
+	}
+	
+	/*****************/
+    /** NotMoneySAPI */
+    /*****************/
 
 	@Override
 	public void onEnable(){
 		getDataFolder().mkdirs();
-		this.sql = new SQLiteManager(this);
-		//new EventListener(this);
+		this.sql = new SQLite3DataProvider(this);
 		this.getServer().getPluginManager().registerEvents(new EventListener(this), this);
 	}
 
 	@Override
 	public void onDisable(){
-		sql.unLoadSqlite("userdata", "data");
+		sql.unLoadSqlite();
 	}
+	
+	/*************/
+    /** Commands */
+    /*************/
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command command, String label, String[] args){
@@ -104,10 +133,6 @@ public class MoneySAPI extends PluginBase{
 				break;
 		}
 		return true;
-	}
-
-	public SQLiteManager getSQL(){
-		return this.sql;
 	}
 
 }

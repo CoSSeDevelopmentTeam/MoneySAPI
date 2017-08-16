@@ -15,11 +15,11 @@ public class EventListener implements Listener{
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
-    	plugin.getSQL().createAccount(event.getPlayer().getName(), this.defaultmoney);
-        if(!plugin.getSQL().isRegister(event.getPlayer().getName())){
+        plugin.getSQL().createAccount(event.getPlayer().getName(), this.defaultmoney);
+        if(!plugin.getSQL().existsAccount(event.getPlayer().getName())){
             plugin.getServer().broadcastMessage("[MoneySAPI]次のプレイヤーのアカウントを作成しました。 \n"+" - "+event.getPlayer().getName());
         }else{
-        	event.getPlayer().sendMessage("[MoneySAPI]アカウントをロードしました。(現在の所持金: " + plugin.getMoney(event.getPlayer()) + MoneySAPI.unit + ")");
+            event.getPlayer().sendMessage("[MoneySAPI]アカウントをロードしました。(現在の所持金: " + plugin.getMoney(event.getPlayer()) + MoneySAPI.unit + ")");
         }
     }
 
