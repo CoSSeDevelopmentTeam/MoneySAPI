@@ -143,5 +143,5 @@ public class SQLite3DataProvider {
 		   		System.err.println(e.getMessage());
 		   	}
 	}
-
+	
 }
