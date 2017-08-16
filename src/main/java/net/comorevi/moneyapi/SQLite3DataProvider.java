@@ -32,7 +32,7 @@ public class SQLite3DataProvider {
 				statement.setQueryTimeout(30);
 				
 				statement.executeUpdate("create table if not exists money (id integer primary key autoincrement, username text not null, money integer not null)");
-				if(allowprint = true){
+				if(allowprint){
 					printAllData();
 				}
 		   }
@@ -68,7 +68,7 @@ public class SQLite3DataProvider {
 	}
 	
 	public int getMoney(String username) {
-		if(!existsAccount(username)) {
+		if(existsAccount(username)) {
 			try {
 				ResultSet rs = statement.executeQuery("select money from money where username = '"+ username +"'");
 				return rs.getInt("money");
