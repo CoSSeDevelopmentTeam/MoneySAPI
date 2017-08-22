@@ -1,7 +1,5 @@
 package net.comorevi.moneyapi;
 
-import net.comorevi.moneyapi.MoneySAPI;
-
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -82,7 +80,7 @@ public class SQLite3DataProvider {
 	public void setMoney(String username, int value) {
 		if(existsAccount(username)){
 			try {
-				statement.execute("update data set money = " + value + " where username = '" + username + "'");
+				statement.execute("update money set money = " + value + " where username = '" + username + "'");
 			} catch (SQLException e) {
 				System.err.println(e.getMessage());
 			}
@@ -93,7 +91,7 @@ public class SQLite3DataProvider {
 		int money = getMoney(username);
 		try {
 			value+=money;
-			statement.execute("update data set money = " + value + " where username = '" + username + "'");
+			statement.execute("update money set money = " + value + " where username = '" + username + "'");
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		}
@@ -108,7 +106,7 @@ public class SQLite3DataProvider {
 		try {
 			value-=money;
 			if(value >= 0){
-				statement.execute("update data set money = " + value + " where username = '" + username + "'");
+				statement.execute("update money set money = " + value + " where username = '" + username + "'");
 			}
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
