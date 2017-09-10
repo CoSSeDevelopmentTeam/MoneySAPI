@@ -1,0 +1,22 @@
+﻿##MoneySAPI ヘルプファイル
+##
+##[使用方法]
+##"##"で始めるとコメントアウトとなります。
+##::opタグをつけるとそれ以降はopのみに送信されます。
+##::allタグをつけるとそれ以降は権限関係なく全員に送られます。
+##
+§aMoneySAPI>>§fヘルプ
+§e/money see [対象者]  §f[対象者]の所持金を確認します。未入力だと自分の所持金が表示されます。
+§e/money pay [対象者] [金額]  §f[対象者]に[金額]を支払います。
+§e/money top  §f所持金ランキングのトップ３を表示します。（未実装）
+§e/money debt  §fお金を借ります。（未実装）
+§e/money stock  §f株取引をします。（未実装）
+::op
+§e/money give [対象者]　[金額]  §f[対象者]に[金額]与えます。
+§e/money take [対象者]　[金額]  §f[対象者]から[金額]を引きます。
+§e/money set [対象者]　[金額]  §f[対象者]の所持金を[金額]にします。
+::all
+§d開発 - CosmoSunriseServerPluginEditorsTeam
+§f[Java版]popkechupki
+
+MoneySAPI Build2.0 Official version

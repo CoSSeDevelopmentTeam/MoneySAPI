@@ -7,7 +7,6 @@ import cn.nukkit.event.player.PlayerJoinEvent;
 public class EventListener implements Listener{
 
     private MoneySAPI plugin;
-    private int defaultmoney = 500;
 
     public EventListener(MoneySAPI plugin) {
         this.plugin = plugin;
@@ -15,12 +14,11 @@ public class EventListener implements Listener{
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
-        plugin.getSQL().createAccount(event.getPlayer().getName(), this.defaultmoney);
-    	plugin.getSQL().createAccount(event.getPlayer().getName(), this.defaultmoney);
         if(!plugin.getSQL().existsAccount(event.getPlayer().getName())){
-            plugin.getServer().broadcastMessage("[MoneySAPI]次のプレイヤーのアカウントを作成しました。 \n"+" - "+event.getPlayer().getName());
+        	plugin.createAccount(event.getPlayer(), MoneySAPI.defaultmoney);
+            plugin.getServer().broadcastMessage(TextValues.INFO + plugin.translateString("player-account-add", event.getPlayer().getName()));
         }else{
-            event.getPlayer().sendMessage("[MoneySAPI]アカウントをロードしました。(現在の所持金: " + plugin.getMoney(event.getPlayer()) + MoneySAPI.unit + ")");
+            event.getPlayer().sendMessage(TextValues.INFO + plugin.translateString("player-account-load", event.getPlayer().getName(), String.valueOf(plugin.getMoney(event.getPlayer())), MoneySAPI.unit));
         }
     }
 

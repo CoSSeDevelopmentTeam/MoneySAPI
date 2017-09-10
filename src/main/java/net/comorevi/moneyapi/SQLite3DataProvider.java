@@ -104,9 +104,9 @@ public class SQLite3DataProvider {
 	public void reduceMoney(String username, int value) {
 		int money = getMoney(username);
 		try {
-			value-=money;
+			money-=value;
 			if(value >= 0){
-				statement.execute("update money set money = " + value + " where username = '" + username + "'");
+				statement.execute("update money set money = " + money + " where username = '" + username + "'");
 			}
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
