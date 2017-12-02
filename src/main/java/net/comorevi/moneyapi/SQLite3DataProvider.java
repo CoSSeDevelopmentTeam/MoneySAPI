@@ -9,40 +9,18 @@ import java.sql.Statement;
 public class SQLite3DataProvider {
 	
 	private MoneySAPI plugin;
-	private Connection connection;
-	private Statement statement;
-	private boolean allowprint = false;
 	
 	public SQLite3DataProvider(MoneySAPI plugin){
 		this.plugin = plugin;
-		
-		try {
-			Class.forName("org.sqlite.JDBC");
-		}catch(Exception e){
-			System.err.println(e.getMessage());
-		}
-		connection = null;
-			try {
-				// データベースとの接続を確立
-				connection = DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder() + "/Datadb.db");
-				
-				statement = connection.createStatement();
-				statement.setQueryTimeout(30);
-				
-				statement.executeUpdate("create table if not exists money (id integer primary key autoincrement, username text not null, money integer not null)");
-				if(allowprint){
-					printAllData();
-				}
-		   }
-		   catch(SQLException e) {
-			   // if the error message is "out of memory",
-			   // it probably means no database file is found
-			   System.err.println(e.getMessage());
-		   }
+		this.connect();
 	}
 	
 	public boolean existsAccount(String username) {
+        Connection connection = null;
 		try {
+            connection = DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder().toString() + "/DataDB.db");
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
 			ResultSet rs = statement.executeQuery("select username from money where username = '"+ username +"'");
 			if(rs.getString("username") != null) {
 				return true;
@@ -51,50 +29,106 @@ public class SQLite3DataProvider {
 			}
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
-		}
+		} finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 		return false;
 	}
 	
 	public void createAccount(String username, int defaultmoney) {
 		if(!existsAccount(username)) {
+            Connection connection = null;
 			try {
+                connection = DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder().toString() + "/DataDB.db");
+                Statement statement = connection.createStatement();
+                statement.setQueryTimeout(30);
 				statement.executeUpdate("insert into money(username, money) values('"+ username +"', "+ defaultmoney +")");
 			} catch (SQLException e) {
 				System.err.println(e.getMessage());
-			}
+			} finally {
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
 		}
 	}
 	
 	public int getMoney(String username) {
 		if(existsAccount(username)) {
+            Connection connection = null;
 			try {
+                connection = DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder().toString() + "/DataDB.db");
+                Statement statement = connection.createStatement();
+                statement.setQueryTimeout(30);
 				ResultSet rs = statement.executeQuery("select money from money where username = '"+ username +"'");
 				return rs.getInt("money");
 			} catch (SQLException e) {
 				System.err.println(e.getMessage());
-			}
+			} finally {
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
 		}
 		return 404;
 	}
 	
 	public void setMoney(String username, int value) {
 		if(existsAccount(username)){
+            Connection connection = null;
 			try {
+                connection = DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder().toString() + "/DataDB.db");
+                Statement statement = connection.createStatement();
+                statement.setQueryTimeout(30);
 				statement.execute("update money set money = " + value + " where username = '" + username + "'");
 			} catch (SQLException e) {
 				System.err.println(e.getMessage());
-			}
+			} finally {
+                if (connection != null) {
+                    try {
+                        connection.close();
+                    } catch (SQLException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
 		}
 	}
 	
 	public void addMoney(String username, int value) {
 		int money = getMoney(username);
+        Connection connection = null;
 		try {
+            connection = DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder().toString() + "/DataDB.db");
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
 			value+=money;
 			statement.execute("update money set money = " + value + " where username = '" + username + "'");
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
-		}
+		} finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 	}
 	
 	public void grantMoney(String username, int value) {
@@ -103,14 +137,26 @@ public class SQLite3DataProvider {
 	
 	public void reduceMoney(String username, int value) {
 		int money = getMoney(username);
+        Connection connection = null;
 		try {
+            connection = DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder().toString() + "/DataDB.db");
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
 			money-=value;
 			if(value >= 0){
 				statement.execute("update money set money = " + money + " where username = '" + username + "'");
 			}
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
-		}
+		} finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 	}
 	
 	public void payMoney(String username, String targetname, int value) {
@@ -119,7 +165,11 @@ public class SQLite3DataProvider {
 	}
 	
 	public void printAllData() {
+        Connection connection = null;
 		try {
+            connection = DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder().toString() + "/DataDB.db");
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
 			ResultSet rs = statement.executeQuery("select * from money");
 			while(rs.next()) {
 				System.out.println("id = " + rs.getInt("id"));
@@ -129,17 +179,40 @@ public class SQLite3DataProvider {
 			rs.close();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
-		}
+		} finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
 	}
-	
-	public void unLoadSqlite(){
-		try {
-			   if(connection != null)
-				  connection.close();
-		   }
-		   	catch(SQLException e) {
-		   		System.err.println(e.getMessage());
-		   	}
-	}
+
+    public void connect () {
+        try {
+            Class.forName("org.sqlite.JDBC");
+        }catch(Exception e){
+            System.err.println(e.getMessage());
+        }
+        Connection connection = null;
+        try {
+            connection = DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder().toString() + "/DataDB.db");
+            Statement statement = connection.createStatement();
+            statement.setQueryTimeout(30);
+            statement.executeUpdate("create table if not exists money (id integer primary key autoincrement, username text not null, money integer not null)");
+        } catch(SQLException e) {
+            System.err.println(e.getMessage());
+        } finally {
+            if (connection != null) {
+                try {
+                    connection.close();
+                } catch (SQLException e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
 	
 }

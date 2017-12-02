@@ -42,6 +42,8 @@ import cn.nukkit.utils.Utils;
  *     - 支払いでお金が無限増殖する問題を修正
  *    2.0.1
  *     - マイナスの支払いができた問題を修正
+ *    2.0.2
+ *     - SQLite3Providerでstatement使いまわししないように
  */
 
 public class MoneySAPI extends PluginBase {
