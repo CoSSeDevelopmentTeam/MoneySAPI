@@ -40,6 +40,8 @@ import cn.nukkit.utils.Utils;
  *     - コンフィグを作成
  *     - アカウント作成の手順を変更
  *     - 支払いでお金が無限増殖する問題を修正
+ *    2.0.1
+ *     - マイナスの支払いができた問題を修正
  */
 
 public class MoneySAPI extends PluginBase {
@@ -169,13 +171,17 @@ public class MoneySAPI extends PluginBase {
                 		if(!sql.existsAccount(args[1])) {
                 			sender.sendMessage(TextValues.INFO + this.translateString("player-account-not-found", args[1]));
                 		} else {
-                			if(this.getMoney(p) > Integer.parseInt(args[2])) {
-                				this.payMoney(sender.getName(), args[1], Integer.parseInt(args[2]));
-                				getServer().getPlayer(args[1]).sendMessage(TextValues.INFO + this.translateString("player-pay2", sender.getName(), args[2], this.unit));
-                				sender.sendMessage(TextValues.INFO + this.translateString("player-pay1", args[1], args[2], this.unit));
-                			} else {
-                				sender.sendMessage(TextValues.ALERT + this.translateString("error-player-lack"));
-                			}
+                		    if (Integer.parseInt(args[2]) > 0) {
+                                if (this.getMoney(p) > Integer.parseInt(args[2])) {
+                                    this.payMoney(sender.getName(), args[1], Integer.parseInt(args[2]));
+                                    getServer().getPlayer(args[1]).sendMessage(TextValues.INFO + this.translateString("player-pay2", sender.getName(), args[2], this.unit));
+                                    sender.sendMessage(TextValues.INFO + this.translateString("player-pay1", args[1], args[2], this.unit));
+                                } else {
+                                    sender.sendMessage(TextValues.ALERT + this.translateString("error-player-lack"));
+                                }
+                            } else {
+                		        sender.sendMessage(TextValues.ALERT + this.translateString("error-command-message4"));
+                            }
                 		}
                 	}
                     return true;
