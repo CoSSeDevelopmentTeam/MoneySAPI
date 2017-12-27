@@ -29,21 +29,24 @@ import cn.nukkit.utils.Utils;
  *    - コマンド仮実装
  *    1.1.1
  *     - すでにアカウントがあるのに新規にアカウントが作成される問題を修正
- *    1.1.2
- *     - すでにアカウントがあるのに新規にアカウントが作成される問題を修正
- *    1.1.3
- *     - SQLite関連書き直し
- *    2.0.0
- *     - コマンド関連書き直し
- *     - メッセージファイルを作成
- *     - ヘルプメッセージファイルを作成
- *     - コンフィグを作成
- *     - アカウント作成の手順を変更
- *     - 支払いでお金が無限増殖する問題を修正
- *    2.0.1
- *     - マイナスの支払いができた問題を修正
+ *     1.1.2
+ *      - すでにアカウントがあるのに新規にアカウントが作成される問題を修正
+ *     1.1.3
+ *      - SQLite関連書き直し
+ *  2.0.0
+ *   - コマンド関連書き直し
+ *   - メッセージファイルを作成
+ *   - ヘルプメッセージファイルを作成
+ *   - コンフィグを作成
+ *   - アカウント作成の手順を変更
+ *   - 支払いでお金が無限増殖する問題を修正
+ *   2.0.1
+ *    - マイナスの支払いができた問題を修正
  *    2.0.2
  *     - SQLite3Providerでstatement使いまわししないように
+ *     2.0.3
+ *      - インスタンスが空だったものを修正
+ *
  */
 
 public class MoneySAPI extends PluginBase {
@@ -123,6 +126,7 @@ public class MoneySAPI extends PluginBase {
         this.initHelpFile();
         this.sql = new SQLite3DataProvider(this);
         this.getServer().getPluginManager().registerEvents(new EventListener(this), this);
+        instance = this;
     }
 
     @Override
