@@ -21,12 +21,8 @@ public class SQLite3DataProvider {
             connection = DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder().toString() + "/DataDB.db");
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);
-			ResultSet rs = statement.executeQuery("select username from money where username = '"+ username +"'");
-			if(rs.getString("username") != null) {
-				return true;
-			} else {
-				return false;
-			}
+			ResultSet rs = statement.executeQuery("select * from money where username = '"+ username +"'");
+			return rs.next();
 		} catch (SQLException e) {
 			System.err.println(e.getMessage());
 		} finally {

@@ -46,6 +46,11 @@ import cn.nukkit.utils.Utils;
  *     - SQLite3Providerでstatement使いまわししないように
  *     2.0.3
  *      - インスタンスが空だったものを修正
+ *      2.0.4
+ *       - 送金などの処理の際送金先のプレイヤーがオフラインだった場合エラーが発生する問題を修正
+ *   2.1.0
+ *    - 操作系をコマンドからフォームに変更
+ *    - SQLite3Dataproviderで発生していたバグの修正
  *
  */
 
@@ -53,6 +58,7 @@ public class MoneySAPI extends PluginBase {
 
     private static MoneySAPI instance;
     private SQLite3DataProvider sql;
+    private FormManager formManager;
     public static String unit;
     public static int defaultmoney;
     
@@ -125,7 +131,9 @@ public class MoneySAPI extends PluginBase {
         this.initMoneySAPIConfig();
         this.initHelpFile();
         this.sql = new SQLite3DataProvider(this);
+        this.formManager = new FormManager(this);
         this.getServer().getPluginManager().registerEvents(new EventListener(this), this);
+        this.getServer().getPluginManager().registerEvents(formManager, this);
         instance = this;
     }
 
@@ -146,6 +154,10 @@ public class MoneySAPI extends PluginBase {
                 sender.sendMessage(TextValues.WARNING + this.translateString("error-command-console"));
                 return true;
             }
+            
+            formManager.sendMoneySAPIHomeWindow((Player) sender);
+            
+            /*
 
             try{if(args[0] != null){}}
             catch(ArrayIndexOutOfBoundsException e){
@@ -180,7 +192,9 @@ public class MoneySAPI extends PluginBase {
                 		    if (Integer.parseInt(args[2]) > 0) {
                                 if (this.getMoney(p) > Integer.parseInt(args[2])) {
                                     this.payMoney(sender.getName(), args[1], Integer.parseInt(args[2]));
-                                    getServer().getPlayer(args[1]).sendMessage(TextValues.INFO + this.translateString("player-pay2", sender.getName(), args[2], this.unit));
+                                    if(getServer().getPlayer(args[1]) != null) {
+										getServer().getPlayer(args[1]).sendMessage(TextValues.INFO + this.translateString("player-pay2", sender.getName(), args[2], this.unit));
+									}
                                     sender.sendMessage(TextValues.INFO + this.translateString("player-pay1", args[1], args[2], this.unit));
                                 } else {
                                     sender.sendMessage(TextValues.ALERT + this.translateString("error-player-lack"));
@@ -198,7 +212,9 @@ public class MoneySAPI extends PluginBase {
                 			sender.sendMessage(TextValues.INFO + this.translateString("player-account-not-found", args[1]));
                 		} else {
                 			this.addMoney(getServer().getPlayer(args[1]), Integer.parseInt(args[2]));
-                			getServer().getPlayer(args[1]).sendMessage(TextValues.INFO + this.translateString("player-give2", args[2], this.unit));
+							if(getServer().getPlayer(args[1]) != null) {
+								getServer().getPlayer(args[1]).sendMessage(TextValues.INFO + this.translateString("player-give2", args[2], this.unit));
+							}
                 			sender.sendMessage(TextValues.INFO + this.translateString("player-give1", args[1], args[2], this.unit));
                 		}
                 	}
@@ -210,7 +226,9 @@ public class MoneySAPI extends PluginBase {
                 			sender.sendMessage(TextValues.INFO + this.translateString("player-account-not-found", args[1]));
                 		} else {
                 			this.reduceMoney(getServer().getPlayer(args[1]).getName(), Integer.parseInt(args[2]));
-                			getServer().getPlayer(args[1]).sendMessage(TextValues.ALERT + this.translateString("player-take2", args[2], this.unit));
+							if(getServer().getPlayer(args[1]) != null) {
+								getServer().getPlayer(args[1]).sendMessage(TextValues.ALERT + this.translateString("player-take2", args[2], this.unit));
+							}
                 			sender.sendMessage(TextValues.ALERT + this.translateString("player-take1", args[1], args[2], this.unit));
                 		}
                 	}
@@ -222,7 +240,9 @@ public class MoneySAPI extends PluginBase {
                 			sender.sendMessage(TextValues.INFO + this.translateString("player-account-not-found", args[1]));
                 		} else {
                 			this.setMoney(getServer().getPlayer(args[1]), Integer.parseInt(args[2]));
-                			getServer().getPlayer(args[1]).sendMessage(TextValues.WARNING + this.translateString("player-set2", args[2], this.unit));
+							if(getServer().getPlayer(args[1]) != null) {
+								getServer().getPlayer(args[1]).sendMessage(TextValues.WARNING + this.translateString("player-set2", args[2], this.unit));
+							}
                 			sender.sendMessage(TextValues.WARNING + this.translateString("player-set1", args[1], args[2], this.unit));
                 		}
                 	}
@@ -239,6 +259,7 @@ public class MoneySAPI extends PluginBase {
                     return true;
                 
             }
+			 */
         }
         return false;
     }
