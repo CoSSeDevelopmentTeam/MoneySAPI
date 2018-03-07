@@ -83,7 +83,7 @@ public class FormManager implements Listener {
 	
 	public void sendPayWindow(Player player) {
 		FormElement[] elements = {
-				new Label("送金するプレイヤー名と金額を入力して「送信」ボタンを押してください"),
+				new Label("送金するプレイヤー名と金額を入力して「送信」ボタンを押してください\n送金手数料は送金する金額の１０％です"),
 				new Input("", "送金先のプレイヤー名を入力..."),
 				new Input("", "送金する金額を入力...")
 		};
@@ -93,10 +93,12 @@ public class FormManager implements Listener {
 			public void onEnter(Player p, List<Object> response) {
 				String targetName;
 				int payAmount;
+				int payAmountIncludeCommission;
 				
 				try {
 					targetName = (String) response.get(1);
 					payAmount = Integer.parseInt(response.get(2).toString());
+					payAmountIncludeCommission = (int) (payAmount + (payAmount * 0.1));
 				} catch(NumberFormatException e) {
 					p.sendMessage("システム>> 不適切な内容が入力されました");
 					return;
@@ -104,12 +106,12 @@ public class FormManager implements Listener {
 				
 				if(mainClass.getSQL().existsAccount(targetName)) {
 					if(payAmount >= 0) {
-						if(mainClass.getSQL().getMoney(p.getName()) > payAmount) {
+						if(mainClass.getSQL().getMoney(p.getName()) > payAmountIncludeCommission) {
 							mainClass.getSQL().payMoney(p.getName(), targetName, payAmount);
 							if(mainClass.getServer().getPlayer(targetName) != null) {
 								mainClass.getServer().getPlayer(targetName).sendMessage(TextValues.INFO + mainClass.translateString("player-pay2", p.getName(), String.valueOf(payAmount), mainClass.getMoneyUnit()));
 							}
-							p.sendMessage(TextValues.INFO + mainClass.translateString("player-pay1", targetName, String.valueOf(payAmount), mainClass.getMoneyUnit()));
+							p.sendMessage(TextValues.INFO + mainClass.translateString("player-pay1", targetName, String.valueOf(payAmountIncludeCommission), mainClass.getMoneyUnit()));
 						} else {
 							p.sendMessage(TextValues.ALERT + mainClass.translateString("error-player-lack"));
 						}

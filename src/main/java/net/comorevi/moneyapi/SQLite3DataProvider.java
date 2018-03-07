@@ -5,6 +5,8 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SQLite3DataProvider {
 	
@@ -35,6 +37,29 @@ public class SQLite3DataProvider {
             }
         }
 		return false;
+	}
+	
+	public List<String> getPlayerListHoldOverCertainAmount(int amount) {
+		Connection connection = null;
+		try {
+			connection = DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder().toString() + "/DataDB.db");
+			Statement statement = connection.createStatement();
+			statement.setQueryTimeout(30);
+			ResultSet rs = statement.executeQuery("select * from money where money >="+amount);
+			ArrayList<String> list = (ArrayList<String>) rs.getArray("money");
+			return list;
+		} catch (SQLException e) {
+			System.err.println(e.getMessage());
+		} finally {
+			if (connection != null) {
+				try {
+					connection.close();
+				} catch (SQLException e) {
+					e.printStackTrace();
+				}
+			}
+		}
+		return null;
 	}
 	
 	public void createAccount(String username, int defaultmoney) {
@@ -156,7 +181,7 @@ public class SQLite3DataProvider {
 	}
 	
 	public void payMoney(String username, String targetname, int value) {
-		reduceMoney(username, value);
+		reduceMoney(username, (int) (value + (value * 0.1)));
 		addMoney(targetname, value);
 	}
 	

@@ -51,6 +51,10 @@ import cn.nukkit.utils.Utils;
  *   2.1.0
  *    - 操作系をコマンドからフォームに変更
  *    - SQLite3Dataproviderで発生していたバグの修正
+ *   2.2.0
+ *    - 送金手数料１０％に設定
+ *   2.3.0
+ *    - 一定金額以上を持っているプレイヤーを取得できるメソッドを追加
  *
  */
 
@@ -156,110 +160,6 @@ public class MoneySAPI extends PluginBase {
             }
             
             formManager.sendMoneySAPIHomeWindow((Player) sender);
-            
-            /*
-
-            try{if(args[0] != null){}}
-            catch(ArrayIndexOutOfBoundsException e){
-                this.helpMessage(sender);
-                return true;
-            }
-
-            String name = sender.getName().toLowerCase();
-
-            Player p = (Player)sender;
-
-            switch(args[0]) {
-                case "see":
-                	if(args.length <= 1) {
-                		sender.sendMessage(TextValues.INFO + this.translateString("player-money", sender.getName(), String.valueOf(sql.getMoney(sender.getName())), this.unit));
-                	} else {
-                		if(!sql.existsAccount(args[1])) {
-                			sender.sendMessage(TextValues.INFO + this.translateString("player-account-not-found", args[1]));
-                		} else {
-                			sender.sendMessage(TextValues.INFO + this.translateString("player-money", args[1], String.valueOf(sql.getMoney(args[1])), this.unit));
-                		}
-                	}
-                    return true;
-
-                case "pay":
-                	if(args.length <= 1) {
-                		sender.sendMessage(TextValues.HELP + this.translateString("help-command-pay"));
-                	} else {
-                		if(!sql.existsAccount(args[1])) {
-                			sender.sendMessage(TextValues.INFO + this.translateString("player-account-not-found", args[1]));
-                		} else {
-                		    if (Integer.parseInt(args[2]) > 0) {
-                                if (this.getMoney(p) > Integer.parseInt(args[2])) {
-                                    this.payMoney(sender.getName(), args[1], Integer.parseInt(args[2]));
-                                    if(getServer().getPlayer(args[1]) != null) {
-										getServer().getPlayer(args[1]).sendMessage(TextValues.INFO + this.translateString("player-pay2", sender.getName(), args[2], this.unit));
-									}
-                                    sender.sendMessage(TextValues.INFO + this.translateString("player-pay1", args[1], args[2], this.unit));
-                                } else {
-                                    sender.sendMessage(TextValues.ALERT + this.translateString("error-player-lack"));
-                                }
-                            } else {
-                		        sender.sendMessage(TextValues.ALERT + this.translateString("error-command-message4"));
-                            }
-                		}
-                	}
-                    return true;
-                    
-                case "give":
-                	if(sender.isOp()) {
-                		if(!sql.existsAccount(args[1])) {
-                			sender.sendMessage(TextValues.INFO + this.translateString("player-account-not-found", args[1]));
-                		} else {
-                			this.addMoney(getServer().getPlayer(args[1]), Integer.parseInt(args[2]));
-							if(getServer().getPlayer(args[1]) != null) {
-								getServer().getPlayer(args[1]).sendMessage(TextValues.INFO + this.translateString("player-give2", args[2], this.unit));
-							}
-                			sender.sendMessage(TextValues.INFO + this.translateString("player-give1", args[1], args[2], this.unit));
-                		}
-                	}
-                    return true;
-                    
-                case "take":
-                	if(sender.isOp()) {
-                		if(!sql.existsAccount(args[1])) {
-                			sender.sendMessage(TextValues.INFO + this.translateString("player-account-not-found", args[1]));
-                		} else {
-                			this.reduceMoney(getServer().getPlayer(args[1]).getName(), Integer.parseInt(args[2]));
-							if(getServer().getPlayer(args[1]) != null) {
-								getServer().getPlayer(args[1]).sendMessage(TextValues.ALERT + this.translateString("player-take2", args[2], this.unit));
-							}
-                			sender.sendMessage(TextValues.ALERT + this.translateString("player-take1", args[1], args[2], this.unit));
-                		}
-                	}
-                    return true;
-                    
-                case "set":
-                	if(sender.isOp()) {
-                		if(!sql.existsAccount(args[1])) {
-                			sender.sendMessage(TextValues.INFO + this.translateString("player-account-not-found", args[1]));
-                		} else {
-                			this.setMoney(getServer().getPlayer(args[1]), Integer.parseInt(args[2]));
-							if(getServer().getPlayer(args[1]) != null) {
-								getServer().getPlayer(args[1]).sendMessage(TextValues.WARNING + this.translateString("player-set2", args[2], this.unit));
-							}
-                			sender.sendMessage(TextValues.WARNING + this.translateString("player-set1", args[1], args[2], this.unit));
-                		}
-                	}
-                    return true;
-                    
-                case "top":
-                	sender.sendMessage(TextValues.INFO + "このコマンドは未実装です。");
-                    return true;
-                case "debt":
-                	sender.sendMessage(TextValues.INFO + "このコマンドは未実装です。");
-                    return true;
-                case "stock":
-                	sender.sendMessage(TextValues.INFO + "このコマンドは未実装です。");
-                    return true;
-                
-            }
-			 */
         }
         return false;
     }
