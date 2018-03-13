@@ -181,7 +181,7 @@ public class SQLite3DataProvider {
 	}
 	
 	public void payMoney(String username, String targetname, int value) {
-		reduceMoney(username, (int) (value + (value * 0.1)));
+		reduceMoney(username, value);
 		addMoney(targetname, value);
 	}
 	

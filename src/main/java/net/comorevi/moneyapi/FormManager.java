@@ -107,7 +107,7 @@ public class FormManager implements Listener {
 				if(mainClass.getSQL().existsAccount(targetName)) {
 					if(payAmount >= 0) {
 						if(mainClass.getSQL().getMoney(p.getName()) > payAmountIncludeCommission) {
-							mainClass.getSQL().payMoney(p.getName(), targetName, payAmount);
+							mainClass.getSQL().payMoney(p.getName(), targetName, payAmountIncludeCommission);
 							if(mainClass.getServer().getPlayer(targetName) != null) {
 								mainClass.getServer().getPlayer(targetName).sendMessage(TextValues.INFO + mainClass.translateString("player-pay2", p.getName(), String.valueOf(payAmount), mainClass.getMoneyUnit()));
 							}

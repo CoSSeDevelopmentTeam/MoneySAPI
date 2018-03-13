@@ -4,7 +4,7 @@
   <groupId>net.comorevi</groupId>
   <artifactId>MoneySAPI</artifactId>
   <name>MoneySAPI</name>
-  <version>2.0.1-SNAPSHOT</version>
+  <version>2.3.1-SNAPSHOT</version>
   <url>http://maven.apache.org</url>
   <build>
     <plugins>
@@ -51,42 +51,17 @@
       <scope>provided</scope>
       <exclusions>
         <exclusion>
-          <artifactId>jansi</artifactId>
-          <groupId>org.fusesource.jansi</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>guava</artifactId>
-          <groupId>com.google.guava</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>gson</artifactId>
-          <groupId>com.google.code.gson</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>snakeyaml</artifactId>
-          <groupId>org.yaml</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>jline</artifactId>
-          <groupId>jline</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>leveldb</artifactId>
-          <groupId>com.tinfoiled.mcpe.leveldb</groupId>
-        </exclusion>
-        <exclusion>
-          <artifactId>netty-all</artifactId>
-          <groupId>io.netty</groupId>
-        </exclusion>
-        <exclusion>
           <artifactId>oshi-core</artifactId>
           <groupId>com.github.oshi</groupId>
         </exclusion>
-        <exclusion>
-          <artifactId>slf4j-nop</artifactId>
-          <groupId>org.slf4j</groupId>
-        </exclusion>
       </exclusions>
+    </dependency>
+    <dependency>
+      <groupId>itsu.mebe</groupId>
+      <artifactId>NukkitFormAPI</artifactId>
+      <version>1.1.0</version>
+      <scope>system</scope>
+      <systemPath>${basedir}/lib/NukkitFormAPI.jar</systemPath>
     </dependency>
   </dependencies>
   <properties>
