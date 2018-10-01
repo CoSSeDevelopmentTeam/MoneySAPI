@@ -22,63 +22,46 @@ public class FormManager implements Listener {
 	}
 	
 	public void sendMoneySAPIHomeWindow(Player player) {
-		Button button1 = new Button() {
-			@Override
-			public void onClick(Player p) {
-				sendPayWindow(p);
-			}
-		};
-		button1.setText("送金/支払い");
-		
-		Button button2 = new Button() {
-			@Override
-			public void onClick(Player p) {
-				sendCheckMoneyWindow(p);
-			}
-		};
-		button2.setText("所持金確認");
-		
-		Button button3 = new Button() {
-			@Override
-			public void onClick(Player p) {
-				sendGiveMoneyWindow(p);
-			}
-		};
-		button3.setText("付与");
-		
-		Button button4 = new Button() {
-			@Override
-			public void onClick(Player p) {
-				sendTakeMoneyWindow(p);
-			}
-		};
-		button4.setText("没収");
-		
-		Button button5 = new Button() {
-			@Override
-			public void onClick(Player p) {
-				sendSetMoneyWindow(p);
-			}
-		};
-		button5.setText("再設定");
-		
-		List<Button> buttons = new ArrayList<>();
-		if(player.isOp()) {
-			buttons.add(button1);
-			buttons.add(button2);
-			buttons.add(button3);
-			buttons.add(button4);
-			buttons.add(button5);
-		} else {
-			buttons.add(button1);
-			buttons.add(button2);
-		}
-		
-		SimpleForm form = new SimpleForm();
-		form.setTitle("Bank of CoSSe");
-		form.addButtons(buttons);
-		
-		NukkitFormAPI.sendFormToPlayer(player, form);
+		SimpleForm form = new SimpleForm() {
+		    @Override
+            public void onEnter(Player player, int index) {
+                switch (index) {
+                    case 0:
+                        sendPayWindow(player);
+                        break;
+                    case 1:
+                        sendCheckMoneyWindow(player);
+                        break;
+                    case 2:
+                        sendGiveMoneyWindow(player);
+                        break;
+                    case 3:
+                        sendTakeMoneyWindow(player);
+                        break;
+                    case 4:
+                        sendTakeMoneyWindow(player);
+                        break;
+                }
+            }
+        }
+                .setId(3678920)
+                .setTitle("しふぉん Wallet - Home");
+
+        List<Button> buttons = new ArrayList<>();
+        if (player.isOp()) {
+            buttons.add(new Button().setText("送金/支払い"));
+            buttons.add(new Button().setText("所持金確認"));
+            buttons.add(new Button().setText("お金を付与"));
+            buttons.add(new Button().setText("お金を没収"));
+            buttons.add(new Button().setText("所持金を再設定"));
+        } else {
+            buttons.add(new Button().setText("送金/支払い"));
+            buttons.add(new Button().setText("所持金確認"));
+        }
+
+        form.addButtons(buttons);
+
+        NukkitFormAPI.getSingleton().sendFormToPlayer(player, form);
 	}
 	
 	public void sendPayWindow(Player player) {
@@ -123,10 +106,10 @@ public class FormManager implements Listener {
 				}
 			}
 		};
-		form.setTitle("しふぉん Wallet");
+		form.setTitle("しふぉん Wallet - 支払い");
 		form.addFormElements(elements);
 		
-		NukkitFormAPI.sendFormToPlayer(player, form);
+		NukkitFormAPI.getSingleton().sendFormToPlayer(player, form);
 	}
 	
 	public void sendCheckMoneyWindow(Player player) {
@@ -147,10 +130,10 @@ public class FormManager implements Listener {
 				}
 			}
 		};
-		form.setTitle("しふぉん Wallet");
+		form.setTitle("しふぉん Wallet - 所持金確認");
 		form.addFormElements(elements);
 		
-		NukkitFormAPI.sendFormToPlayer(player, form);
+		NukkitFormAPI.getSingleton().sendFormToPlayer(player, form);
 	}
 	
 	public void sendGiveMoneyWindow(Player player) {
@@ -186,10 +169,10 @@ public class FormManager implements Listener {
 				}
 			}
 		};
-		form.setTitle("しふぉん Wallet");
+		form.setTitle("しふぉん Wallet - お金を付与");
 		form.addFormElements(elements);
 		
-		NukkitFormAPI.sendFormToPlayer(player, form);
+		NukkitFormAPI.getSingleton().sendFormToPlayer(player, form);
 	}
 	
 	public void sendTakeMoneyWindow(Player player) {
@@ -231,10 +214,10 @@ public class FormManager implements Listener {
 				}
 			}
 		};
-		form.setTitle("しふぉん Wallet");
+		form.setTitle("しふぉん Wallet - お金を没収");
 		form.addFormElements(elements);
 		
-		NukkitFormAPI.sendFormToPlayer(player, form);
+		NukkitFormAPI.getSingleton().sendFormToPlayer(player, form);
 	}
 	
 	public void sendSetMoneyWindow(Player player) {
@@ -270,9 +253,9 @@ public class FormManager implements Listener {
 				}
 			}
 		};
-		form.setTitle("しふぉん Wallet");
+		form.setTitle("しふぉん Wallet - 所持金再設定");
 		form.addFormElements(elements);
 		
-		NukkitFormAPI.sendFormToPlayer(player, form);
+		NukkitFormAPI.getSingleton().sendFormToPlayer(player, form);
 	}
 }
