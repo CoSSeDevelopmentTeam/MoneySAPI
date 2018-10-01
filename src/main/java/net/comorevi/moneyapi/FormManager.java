@@ -123,7 +123,7 @@ public class FormManager implements Listener {
 				}
 			}
 		};
-		form.setTitle("Bank of CoSSe");
+		form.setTitle("しふぉん Wallet");
 		form.addFormElements(elements);
 		
 		NukkitFormAPI.sendFormToPlayer(player, form);
@@ -147,7 +147,7 @@ public class FormManager implements Listener {
 				}
 			}
 		};
-		form.setTitle("Bank on CoSSe");
+		form.setTitle("しふぉん Wallet");
 		form.addFormElements(elements);
 		
 		NukkitFormAPI.sendFormToPlayer(player, form);
@@ -186,7 +186,7 @@ public class FormManager implements Listener {
 				}
 			}
 		};
-		form.setTitle("Bank of CoSSe");
+		form.setTitle("しふぉん Wallet");
 		form.addFormElements(elements);
 		
 		NukkitFormAPI.sendFormToPlayer(player, form);
@@ -231,7 +231,7 @@ public class FormManager implements Listener {
 				}
 			}
 		};
-		form.setTitle("Bank of CoSSe");
+		form.setTitle("しふぉん Wallet");
 		form.addFormElements(elements);
 		
 		NukkitFormAPI.sendFormToPlayer(player, form);
@@ -270,7 +270,7 @@ public class FormManager implements Listener {
 				}
 			}
 		};
-		form.setTitle("Bank of CoSSe");
+		form.setTitle("しふぉん Wallet");
 		form.addFormElements(elements);
 		
 		NukkitFormAPI.sendFormToPlayer(player, form);

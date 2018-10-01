@@ -126,6 +126,26 @@ public class MoneySAPI extends PluginBase {
         return unit;
     }
 
+    public void sendPayWindow(Player player) {
+        this.formManager.sendPayWindow(player);
+    }
+
+    public void sendCheckMoneyWindow(Player player) {
+        this.formManager.sendCheckMoneyWindow(player);
+    }
+
+    public void sendGiveMoneyWindow(Player player) {
+        this.formManager.sendGiveMoneyWindow(player);
+    }
+
+    public void sendTakeMoneyWindow(Player player) {
+        this.formManager.sendTakeMoneyWindow(player);
+    }
+
+    public void sendSetMoneyWindow(Player player) {
+        this.formManager.sendSetMoneyWindow(player);
+    }
+
     /*****************/
     /** NotMoneySAPI */
     /*****************/
