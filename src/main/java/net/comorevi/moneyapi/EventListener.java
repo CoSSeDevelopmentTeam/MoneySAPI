@@ -15,10 +15,10 @@ public class EventListener implements Listener{
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
         if(!plugin.getSQL().existsAccount(event.getPlayer().getName())){
-        	plugin.createAccount(event.getPlayer(), MoneySAPI.defaultmoney);
+        	plugin.create(event.getPlayer().getName(), MoneySAPI.defaultmoney);
             plugin.getServer().broadcastMessage(TextValues.INFO + plugin.translateString("player-account-add", event.getPlayer().getName()));
         }else{
-            event.getPlayer().sendMessage(TextValues.INFO + plugin.translateString("player-account-load", event.getPlayer().getName(), String.valueOf(plugin.getMoney(event.getPlayer())), MoneySAPI.unit));
+            event.getPlayer().sendMessage(TextValues.INFO + plugin.translateString("player-account-load", event.getPlayer().getName(), String.valueOf(plugin.getMoney(event.getPlayer().getName())), MoneySAPI.unit));
         }
     }
 
