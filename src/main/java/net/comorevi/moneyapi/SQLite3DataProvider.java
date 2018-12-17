@@ -226,7 +226,6 @@ public class SQLite3DataProvider {
         }catch(Exception e){
             System.err.println(e.getMessage());
         }
-        Connection connection = null;
         try {
             connection = DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder().toString() + "/DataDB.db");
             Statement statement = connection.createStatement();
