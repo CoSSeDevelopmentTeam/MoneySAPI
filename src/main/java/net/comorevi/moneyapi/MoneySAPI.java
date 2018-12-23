@@ -65,6 +65,10 @@ import cn.nukkit.utils.Utils;
  *    - SQLiteのConnectionがnullになっていた問題の修正
  *   3.1.0
  *    - 関数名の変更canPayからisPayableに
+ *    3.1.1
+ *     - isPayableの判定が反対になっていた
+ *    3.1.2
+ *     - isExistsを追加
  *
  */
 
@@ -150,9 +154,17 @@ public class MoneySAPI extends PluginBase {
         getSQL().setPublishStatus(name, status);
     }
 
+    public boolean isExists(String name) {
+        if (getSQL().existsAccount(name)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean isPayable(String user, int fee) {
         int pocket = getSQL().getMoney(user);
-        if (pocket > fee) {
+        if (pocket < fee) {
             return false;
         } else {
             return true;
