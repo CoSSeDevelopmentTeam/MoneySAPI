@@ -63,6 +63,8 @@ import cn.nukkit.utils.Utils;
  *   - canPayメソッドで支払える金額を所持しているか確認できるように
  *   3.0.1
  *    - SQLiteのConnectionがnullになっていた問題の修正
+ *   3.1.0
+ *    - 関数名の変更canPayからisPayableに
  *
  */
 
@@ -148,9 +150,9 @@ public class MoneySAPI extends PluginBase {
         getSQL().setPublishStatus(name, status);
     }
 
-    public boolean canPay(String user, int value) {
+    public boolean isPayable(String user, int fee) {
         int pocket = getSQL().getMoney(user);
-        if (pocket > value) {
+        if (pocket > fee) {
             return false;
         } else {
             return true;
