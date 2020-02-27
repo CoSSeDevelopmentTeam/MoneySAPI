@@ -12,8 +12,8 @@
 
     <repositories>
         <repository>
-            <id>regularbox</id>
-            <url>http://ci.regularbox.com/plugin/repository/everything/</url>
+            <id>nukkit-repo</id>
+            <url>https://repo.nukkitx.com/snapshot</url>
         </repository>
         <repository>
             <id>github</id>
