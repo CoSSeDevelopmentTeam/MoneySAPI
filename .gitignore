@@ -1,2 +1,4 @@
-/target/
-*.xml
+*.iml
+.idea/
+target/
+.DS_Store
