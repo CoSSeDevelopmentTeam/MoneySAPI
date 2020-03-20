@@ -9,14 +9,19 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class MessageManager {
-    private static final MessageManager instance = new MessageManager();
+    private static MessageManager instance = new MessageManager();
     private Config translateFile;
     private Map<String, Object> configData = new HashMap<String, Object>();
 
-    public MessageManager() {
+    private MessageManager() {
         new File("./plugins/MoneySAPI").mkdirs();
         initHelpFile();
         initMessageConfig();
+        instance = this;
+    }
+
+    public static MessageManager getInstance() {
+        return instance;
     }
 
     public void helpMessage(CommandSender sender){

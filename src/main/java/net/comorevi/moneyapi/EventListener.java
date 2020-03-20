@@ -7,7 +7,7 @@ import net.comorevi.moneyapi.util.MessageManager;
 import net.comorevi.moneyapi.util.TextValues;
 
 public class EventListener implements Listener{
-    private MessageManager message = new MessageManager();
+    private MessageManager message = MessageManager.getInstance();
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent event){
