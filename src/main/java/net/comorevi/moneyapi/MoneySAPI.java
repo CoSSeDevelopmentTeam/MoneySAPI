@@ -57,6 +57,18 @@ import cn.nukkit.utils.Utils;
  *    - 一定金額以上を持っているプレイヤーを取得できるメソッドを追加
  *    2.3.1
  *    - payAmount()で自動的に手数料を追加していた仕様を変更
+ *  3.0.0
+ *   - しふぉん実装に伴い、フォーム表示部分を削除しアカウント処理のみを残す
+ *   - データベースのセキュリティ向上と、ランキングへの公開可否recordをカラムに追加
+ *   - canPayメソッドで支払える金額を所持しているか確認できるように
+ *   3.0.1
+ *    - SQLiteのConnectionがnullになっていた問題の修正
+ *   3.1.0
+ *    - 関数名の変更canPayからisPayableに
+ *    3.1.1
+ *     - isPayableの判定が反対になっていた
+ *    3.1.2
+ *     - isExistsを追加
  *
  */
 
@@ -64,7 +76,6 @@ public class MoneySAPI extends PluginBase {
 
     private static MoneySAPI instance;
     private SQLite3DataProvider sql;
-    private FormManager formManager;
     public static String unit;
     public static int defaultmoney;
     
@@ -81,7 +92,7 @@ public class MoneySAPI extends PluginBase {
         return instance;
     }
 
-    public SQLite3DataProvider getSQL() {
+    SQLite3DataProvider getSQL() {
         return this.sql;
     }
 
@@ -89,61 +100,79 @@ public class MoneySAPI extends PluginBase {
     /** MoneySAPI */
     /**************/
 
-    public void createAccount(Player player, int defaultmoney) {
-        sql.createAccount(player.getName(), defaultmoney);
+    public void create(String name, int def) {
+        getSQL().createAccount(name, def, false);
     }
 
-    public int getMoney(Player player) {
-        return sql.getMoney(player.getName());
+    public void create(String name, int def, boolean record) {
+        getSQL().createAccount(name, def, record);
     }
 
-    public void setMoney(Player player, int value) {
-        try {
-            sql.setMoney(player.getName(), value);
+    /*
+    public boolean delete(String name) {
+        return false;
+    }
+    */
+
+    public int getMoney(String name) {
+        return getSQL().getMoney(name);
+    }
+
+    public void setMoney(String name, int amount) {
+        getSQL().setMoney(name, amount);
+    }
+
+    public void payMoney(String name, String targetName, int value) {
+        getSQL().payMoney(name, targetName, value);
+    }
+
+    public void payMoney(String name, String targetName, int value, double tax) {
+        getSQL().payMoney(name, targetName, value, tax);
+    }
+
+    public void addMoney(String name, int amount) {
+        getSQL().addMoney(name, amount);
+    }
+
+    public void grantMoney(String name, int amount) {
+        getSQL().grantMoney(name, amount);
+    }
+
+    public void reduceMoney(String name, int amount) {
+        getSQL().reduceMoney(name, amount);
+    }
+    /*
+    public Map getRank(int range) { //後日実装
+        return null;
+    }
+    */
+    public boolean getPublishStatus(String name) {
+        return getSQL().getPublishStatus(name);
+    }
+
+    public void setPublishStatus(String name, boolean status) {
+        getSQL().setPublishStatus(name, status);
+    }
+
+    public boolean isExists(String name) {
+        if (getSQL().existsAccount(name)) {
+            return true;
+        } else {
+            return false;
         }
-         catch(NumberFormatException e) {
-             getServer().getLogger().critical("プレイヤーによる数値の入力でエラーが発生しました。");
+    }
+
+    public boolean isPayable(String user, int fee) {
+        int pocket = getSQL().getMoney(user);
+        if (pocket < fee) {
+            return false;
+        } else {
+            return true;
         }
-    }
-
-    public void addMoney(Player player, int value) {
-        sql.addMoney(player.getName(), value);
-    }
-
-    public void grantMoney(Player player, int value) {
-        sql.addMoney(player.getName(), value);
-    }
-    
-    public void reduceMoney(String username, int value) {
-    	sql.reduceMoney(username, value);
-    }
-
-    public void payMoney(String username, String targetname, int value) {
-        sql.payMoney(username, targetname, value);
     }
 
     public String getMoneyUnit() {
         return unit;
-    }
-
-    public void sendPayWindow(Player player) {
-        this.formManager.sendPayWindow(player);
-    }
-
-    public void sendCheckMoneyWindow(Player player) {
-        this.formManager.sendCheckMoneyWindow(player);
-    }
-
-    public void sendGiveMoneyWindow(Player player) {
-        this.formManager.sendGiveMoneyWindow(player);
-    }
-
-    public void sendTakeMoneyWindow(Player player) {
-        this.formManager.sendTakeMoneyWindow(player);
-    }
-
-    public void sendSetMoneyWindow(Player player) {
-        this.formManager.sendSetMoneyWindow(player);
     }
 
     /*****************/
@@ -157,15 +186,13 @@ public class MoneySAPI extends PluginBase {
         this.initMoneySAPIConfig();
         this.initHelpFile();
         this.sql = new SQLite3DataProvider(this);
-        this.formManager = new FormManager(this);
         this.getServer().getPluginManager().registerEvents(new EventListener(this), this);
-        this.getServer().getPluginManager().registerEvents(formManager, this);
         instance = this;
     }
 
     @Override
     public void onDisable(){
-        
+        getSQL().disConnectSQL();
     }
 
     /*************/
@@ -181,7 +208,7 @@ public class MoneySAPI extends PluginBase {
                 return true;
             }
             
-            formManager.sendMoneySAPIHomeWindow((Player) sender);
+            //
         }
         return false;
     }
