@@ -3,6 +3,8 @@ package net.comorevi.moneyapi;
 import cn.nukkit.Player;
 import net.comorevi.moneyapi.util.SQLite3DataProvider;
 
+import java.util.LinkedList;
+
 public class MoneySAPI {
     private static MoneySAPI instance = new MoneySAPI();
     private SQLite3DataProvider provider = new SQLite3DataProvider();
@@ -20,6 +22,10 @@ public class MoneySAPI {
     }
 
     public static void registerAccount(Player player, int def) {
+        //
+    }
+
+    public static void registerAccount(Player player, int def, boolean publish) {
         //
     }
 
@@ -61,6 +67,30 @@ public class MoneySAPI {
 
     public static boolean isPayable(String playerName, int amount) {
         return false;
+    }
+
+    public static void setPublishStatus(Player player) {
+        //
+    }
+
+    public static void setPublishStatus(String playerName) {
+        //
+    }
+
+    public static LinkedList<String> getMoneyRank(int limit) {
+        return null;
+    }
+
+    public static boolean isPublished(Player player) {
+        return false;
+    }
+
+    public static boolean isPublished(String playerName) {
+        return false;
+    }
+
+    public static String getMoneyUnit() {
+        return "";
     }
 
     protected static void disconnectSQL() {

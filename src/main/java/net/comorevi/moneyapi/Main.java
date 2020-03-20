@@ -87,101 +87,6 @@ public class Main extends PluginBase {
     private Map<String, Object> pluginData = new HashMap<String, Object>();
     private Config conf;
 
-    /**************/
-    /** プラグイン関連  */
-    /**************/
-
-    public static Main getInstance() {
-        return instance;
-    }
-
-    SQLite3DataProvider getSQL() {
-        return this.sql;
-    }
-
-    /**************/
-    /** MoneySAPI */
-    /**************/
-
-    public void create(String name, int def) {
-        getSQL().createAccount(name, def, false);
-    }
-
-    public void create(String name, int def, boolean record) {
-        getSQL().createAccount(name, def, record);
-    }
-
-    /*
-    public boolean delete(String name) {
-        return false;
-    }
-    */
-
-    public int getMoney(String name) {
-        return getSQL().getMoney(name);
-    }
-
-    public void setMoney(String name, int amount) {
-        getSQL().setMoney(name, amount);
-    }
-
-    public void payMoney(String name, String targetName, int value) {
-        getSQL().payMoney(name, targetName, value);
-    }
-
-    public void payMoney(String name, String targetName, int value, double tax) {
-        getSQL().payMoney(name, targetName, value, tax);
-    }
-
-    public void addMoney(String name, int amount) {
-        getSQL().addMoney(name, amount);
-    }
-
-    public void grantMoney(String name, int amount) {
-        getSQL().grantMoney(name, amount);
-    }
-
-    public void reduceMoney(String name, int amount) {
-        getSQL().reduceMoney(name, amount);
-    }
-    /*
-    public Map getRank(int range) { //後日実装
-        return null;
-    }
-    */
-    public boolean getPublishStatus(String name) {
-        return getSQL().getPublishStatus(name);
-    }
-
-    public void setPublishStatus(String name, boolean status) {
-        getSQL().setPublishStatus(name, status);
-    }
-
-    public boolean isExists(String name) {
-        if (getSQL().existsAccount(name)) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-    public boolean isPayable(String user, int fee) {
-        int pocket = getSQL().getMoney(user);
-        if (pocket < fee) {
-            return false;
-        } else {
-            return true;
-        }
-    }
-
-    public String getMoneyUnit() {
-        return unit;
-    }
-
-    /*****************/
-    /** NotMoneySAPI */
-    /*****************/
-
     @Override
     public void onEnable(){
         getDataFolder().mkdirs();
@@ -193,29 +98,10 @@ public class Main extends PluginBase {
         instance = this;
     }
 
-    @Override
-    public void onDisable(){
-        getSQL().disConnectSQL();
-    }
-
     /*************/
-    /** Commands */
+    /**  Utils   */
     /*************/
 
-    @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if(command.getName().equals("money")) {
-
-            if(sender instanceof ConsoleCommandSender) {
-                sender.sendMessage(TextValues.WARNING + this.translateString("error-command-console"));
-                return true;
-            }
-            
-            //
-        }
-        return false;
-    }
-    
     public void helpMessage(CommandSender sender){
         Thread th = new Thread(new Runnable(){
             @Override
