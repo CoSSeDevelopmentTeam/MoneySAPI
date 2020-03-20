@@ -1,8 +1,7 @@
 package net.comorevi.moneyapi;
 
 import cn.nukkit.plugin.PluginBase;
-import net.comorevi.moneyapi.command.GiveMoneyCommand;
-import net.comorevi.moneyapi.command.HelpMoneyCommand;
+import net.comorevi.moneyapi.command.*;
 
 /**
  * Money System API
@@ -67,11 +66,11 @@ public class Main extends PluginBase {
         this.getServer().getPluginManager().registerEvents(new EventListener(), this);
         this.getServer().getCommandMap().register("givemoney", new GiveMoneyCommand("givemoney"));
         this.getServer().getCommandMap().register("moneyhelp", new HelpMoneyCommand("moneyhelp"));
-        this.getServer().getCommandMap().register("paymoney", new GiveMoneyCommand("paymoney"));
-        this.getServer().getCommandMap().register("rankmoney", new GiveMoneyCommand("rankmoney"));
-        this.getServer().getCommandMap().register("seemoney", new GiveMoneyCommand("seemoney"));
-        this.getServer().getCommandMap().register("setmoney", new GiveMoneyCommand("setmoney"));
-        this.getServer().getCommandMap().register("takemoney", new GiveMoneyCommand("takemoney"));
+        this.getServer().getCommandMap().register("paymoney", new PayMoneyCommand("paymoney"));
+        this.getServer().getCommandMap().register("rankmoney", new RankMoneyCommand("rankmoney"));
+        this.getServer().getCommandMap().register("seemoney", new SeeMoneyCommand("seemoney"));
+        this.getServer().getCommandMap().register("setmoney", new SetMoneyCommand("setmoney"));
+        this.getServer().getCommandMap().register("takemoney", new TakeMoneyCommand("takemoney"));
     }
 
     @Override
