@@ -5,3 +5,21 @@ load: POSTWORLD
 author: popkechupki
 api: ["1.0.0"]
 description: "CoSSeの基本経済プラグイン"
+
+permissions:
+  moneysadminshop:
+    children:
+      moneysapi.command:
+        children:
+          moneysapi.command.seemoney:
+            default: true
+          moneysapi.command.paymoney:
+            default: true
+          moneysapi.command.moneyrank:
+            default: true
+          moneysapi.command.givemoney:
+            default: op
+          moneysapi.command.takemoney:
+            default: op
+          moneysapi.command.setmoney:
+            default: op
