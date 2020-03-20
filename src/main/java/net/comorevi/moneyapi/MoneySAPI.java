@@ -1,13 +1,14 @@
 package net.comorevi.moneyapi;
 
 import cn.nukkit.Player;
+import net.comorevi.moneyapi.util.ConfigManager;
 import net.comorevi.moneyapi.util.SQLite3DataProvider;
 
 import java.util.LinkedList;
 
 public class MoneySAPI {
     private static MoneySAPI instance = new MoneySAPI();
-    private SQLite3DataProvider provider = new SQLite3DataProvider();
+    private SQLite3DataProvider dataProvider = new SQLite3DataProvider();
 
     private MoneySAPI() {
         instance = this;
@@ -17,83 +18,135 @@ public class MoneySAPI {
         return instance;
     }
 
-    public static void registerAccount(Player player) {
-        //
+    public void registerAccount(Player player) {
+        registerAccount(player, ConfigManager.DEFAULT_MONEY);
     }
 
-    public static void registerAccount(Player player, int def) {
-        //
+    public void registerAccount(String playerName) {
+        registerAccount(playerName, ConfigManager.DEFAULT_MONEY);
     }
 
-    public static void registerAccount(Player player, int def, boolean publish) {
-        //
+    public void registerAccount(Player player, int def) {
+        registerAccount(player, def, ConfigManager.DEFAULT_PUBLISH_STATUS);
     }
 
-    public static void removeAccount(Player player) {
-        //
+    public void registerAccount(String playerName, int def) {
+        registerAccount(playerName, def, ConfigManager.DEFAULT_PUBLISH_STATUS);
     }
 
-    public static boolean existsAccount(Player player) {
-        return false;
+    public void registerAccount(Player player, int def, boolean publish) {
+        dataProvider.createAccount(player.getName(), def, publish);
     }
 
-    public static void addMoney(Player player, int amount) {
-        //
+    public void registerAccount(String playerName, int def, boolean publish) {
+        dataProvider.createAccount(playerName, def, publish);
     }
 
-    public static void setMoney(Player player, int amount) {
-        //
+    public void deleteAccount(Player player) {
+        deleteAccount(player.getName());
     }
 
-    public static void payMoney(Player payer, Player target) {
-        //
+    public void deleteAccount(String playerName) {
+        dataProvider.deleteAccount(playerName);
     }
 
-    public static void payMoney(String payerName, String targetName) {
-        //
+    public boolean existsAccount(Player player) {
+        return existsAccount(player.getName());
     }
 
-    public static void payMoney(Player payer, Player target, double commissionRatio) {
-        //
+    public boolean existsAccount(String playerName) {
+        return dataProvider.existsAccount(playerName);
     }
 
-    public static void payMoney(String payerName, String targetName, double commissionRatio) {
-        //
+    public void addMoney(Player player, int amount) {
+        addMoney(player.getName(), amount);
     }
 
-    public static boolean isPayable(Player player, int amount) {
-        return false;
+    public void addMoney(String playerName, int amount) {
+        dataProvider.addMoney(playerName, amount);
     }
 
-    public static boolean isPayable(String playerName, int amount) {
-        return false;
+    public void setMoney(Player player, int amount) {
+        setMoney(player.getName(), amount);
     }
 
-    public static void setPublishStatus(Player player) {
-        //
+    public void setMoney(String playerName, int amount) {
+        dataProvider.setMoney(playerName, amount);
     }
 
-    public static void setPublishStatus(String playerName) {
-        //
+    public void reduceMoney(Player player, int amount) {
+        reduceMoney(player.getName(), amount);
     }
 
-    public static LinkedList<String> getMoneyRank(int limit) {
+    public void reduceMoney(String playerName, int amount) {
+        dataProvider.reduceMoney(playerName, amount);
+    }
+
+    public int getMoney(Player player) {
+        return getMoney(player.getName());
+    }
+
+    public int getMoney(String playerName) {
+        return dataProvider.getMoney(playerName);
+    }
+
+    public void payMoney(Player payer, Player target, int amount) {
+        payMoney(payer.getName(), target.getName(), amount);
+    }
+
+    public void payMoney(String payerName, String targetName, int amount) {
+        if (isPayable(payerName, amount)) {
+            reduceMoney(payerName, amount);
+            addMoney(targetName, amount);
+        }
+    }
+
+    public void payMoney(Player payer, Player target, int amount, double commissionRatio) {
+        payMoney(payer.getName(), target.getName(), amount, commissionRatio);
+    }
+
+    public void payMoney(String payerName, String targetName, int amount, double commissionRatio) {
+        if (isPayable(payerName, (int) (amount * commissionRatio))) {
+            reduceMoney(payerName, (int) (amount * commissionRatio));
+            addMoney(targetName, amount);
+        }
+    }
+
+    public boolean isPayable(Player player, int amount) {
+        return isPayable(player.getName(), amount);
+    }
+
+    public boolean isPayable(String playerName, int amount) {
+        return getMoney(playerName) >= amount;
+    }
+
+    public void setPublishStatus(Player player, boolean status) {
+        setPublishStatus(player.getName(), status);
+    }
+
+    public void setPublishStatus(String playerName, boolean status) {
+        dataProvider.setPublishStatus(playerName, status);
+    }
+
+    public boolean isPublished(Player player) {
+        return isPublished(player.getName());
+    }
+
+    public boolean isPublished(String playerName) {
+        return dataProvider.getPublishStatus(playerName);
+    }
+
+    /*
+    public LinkedList<String> getMoneyRank(int limit) {
         return null;
     }
+     */
 
-    public static boolean isPublished(Player player) {
-        return false;
+    public String getMoneyUnit() {
+        return ConfigManager.MONEY_UNIT;
     }
 
-    public static boolean isPublished(String playerName) {
-        return false;
-    }
-
-    public static String getMoneyUnit() {
-        return "";
-    }
-
-    protected static void disconnectSQL() {
-        //
+    protected void disconnectSQL() {
+        dataProvider.disConnectSQL();
     }
 }

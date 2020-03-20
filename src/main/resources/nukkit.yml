@@ -5,7 +5,3 @@ load: POSTWORLD
 author: popkechupki
 api: ["1.0.0"]
 description: "CoSSeの基本経済プラグイン"
-
-commands: 
-  money: 
-    description: "MoneySAPIのマスターコマンド"

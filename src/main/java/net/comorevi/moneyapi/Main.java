@@ -77,25 +77,23 @@ import net.comorevi.moneyapi.util.TextValues;
 
 public class Main extends PluginBase {
 
-    private static Main instance;
-    private SQLite3DataProvider sql;
     public static String unit;
     public static int defaultmoney;
     
     private Config translateFile;
     private Map<String, Object> configData = new HashMap<String, Object>();
-    private Map<String, Object> pluginData = new HashMap<String, Object>();
-    private Config conf;
 
     @Override
     public void onEnable(){
         getDataFolder().mkdirs();
         this.initMessageConfig();
-        this.initMoneySAPIConfig();
         this.initHelpFile();
-        this.sql = new SQLite3DataProvider(this);
         this.getServer().getPluginManager().registerEvents(new EventListener(this), this);
-        instance = this;
+    }
+
+    @Override
+    public void onDisable() {
+        MoneySAPI.getInstance().disconnectSQL();
     }
 
     /*************/
@@ -175,35 +173,6 @@ public class Main extends PluginBase {
         return;
     }
 
-    private void initMoneySAPIConfig(){
-        if(!new File(getDataFolder().toString() + "/Config.yml").exists()){
-            try {
-                FileWriter fw = new FileWriter(new File(getDataFolder().toString() + "/Config.yml"), true);
-                PrintWriter pw = new PrintWriter(fw);
-                pw.println("");
-                pw.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            this.conf = new Config(new File(getDataFolder().toString() + "/Config.yml"), Config.YAML);
-            this.conf.load(getDataFolder().toString() + "/Config.yml");
-            this.conf.set("Unit", "MS");
-            this.conf.set("DefaultMoney", 500);
-            this.conf.save();
-        }
-
-        this.conf = new Config(new File(getDataFolder().toString() + "/Config.yml"), Config.YAML);
-        this.conf.load(getDataFolder().toString() + "/Config.yml");
-        this.pluginData = this.conf.getAll();
-
-        /*コンフィグからデータを取得*/
-        unit = (String) pluginData.get("Unit");
-        defaultmoney = (Integer) pluginData.get("DefaultMoney");
-        
-        return;
-    }
-    
     public void initHelpFile(){
     	if(!new File(getDataFolder().toString() + "/Help.txt").exists()){
             try {

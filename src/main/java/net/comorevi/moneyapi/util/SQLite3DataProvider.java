@@ -1,23 +1,18 @@
 package net.comorevi.moneyapi.util;
 
-import net.comorevi.moneyapi.Main;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 public class SQLite3DataProvider {
-	
-	private Main plugin;
 	private Connection connection = null;
 	
-	public SQLite3DataProvider(Main plugin){
-		this.plugin = plugin;
-		this.connectSQL();
+	public SQLite3DataProvider(){
+		connectSQL();
 	}
 	
-	boolean existsAccount(String username) {
+	public boolean existsAccount(String username) {
 	    try {
 	        String sql = "SELECT username FROM money WHERE username = ?";
             PreparedStatement statement = connection.prepareStatement(sql);
@@ -34,7 +29,7 @@ public class SQLite3DataProvider {
 		return false;
 	}
 	
-	List<String> getPlayerListHoldOverCertainAmount(int amount) {
+	public List<String> getPlayerListHoldOverCertainAmount(int amount) {
 	    try {
 	        String sql = "SELECT username FROM money WHERE money >= ?";
 	        PreparedStatement statement = connection.prepareStatement(sql);
@@ -56,7 +51,7 @@ public class SQLite3DataProvider {
 		return null;
 	}
 	
-	void createAccount(String username, int defaultmoney, boolean record) {
+	public void createAccount(String username, int defaultmoney, boolean record) {
 	    try {
 	        if (existsAccount(username)) return;
 
@@ -73,8 +68,24 @@ public class SQLite3DataProvider {
             e.printStackTrace();
         }
 	}
+
+	public void deleteAccount(String username) {
+		try {
+			if (!existsAccount(username)) return;
+
+			String sql = "DELETE FROM money WHERE location = ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setString(1, username);
+			statement.setQueryTimeout(30);
+
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
-	int getMoney(String username) {
+	public int getMoney(String username) {
 	    try {
 	        if (!existsAccount(username)) return -1;
 
@@ -93,11 +104,11 @@ public class SQLite3DataProvider {
 		return -1;
 	}
 
-	Map<Integer, Map<String, Integer>> getRanking(int range) {
+	public Map<Integer, Map<String, Integer>> getRanking(int range) {
 	    return null;
     }
 
-    boolean getPublishStatus(String username) {
+    public boolean getPublishStatus(String username) {
 	    try {
 	        if (!existsAccount(username)) return Boolean.parseBoolean(null);
 
@@ -116,7 +127,7 @@ public class SQLite3DataProvider {
         return Boolean.parseBoolean(null);
     }
 	
-    void setMoney(String username, int value) {
+    public void setMoney(String username, int value) {
 	    try {
 	        if (!existsAccount(username)) return;
 
@@ -133,7 +144,7 @@ public class SQLite3DataProvider {
         }
 	}
 
-	void setPublishStatus(String username, boolean record) {
+	public void setPublishStatus(String username, boolean record) {
 	    try {
 	        if (!existsAccount(username)) return;
 
@@ -150,7 +161,7 @@ public class SQLite3DataProvider {
         }
     }
 	
-    void addMoney(String username, int value) {
+    public void addMoney(String username, int value) {
 	    try {
 	        int pocketMoney = getMoney(username);
 
@@ -165,12 +176,8 @@ public class SQLite3DataProvider {
             e.printStackTrace();
         }
 	}
-	
-	void grantMoney(String username, int value) {
-		addMoney(username, value);
-	}
-	
-	void reduceMoney(String username, int value) {
+
+	public void reduceMoney(String username, int value) {
 	    try {
 	        int pocketMoney = getMoney(username);
 
@@ -191,35 +198,6 @@ public class SQLite3DataProvider {
             e.printStackTrace();
         }
 	}
-	
-	void payMoney(String username, String targetname, int value) {
-		reduceMoney(username, value);
-		addMoney(targetname, value);
-	}
-
-	void payMoney(String username, String targetname, int value, double tax) {
-	    reduceMoney(username, (int) (value * tax));
-	    addMoney(targetname, value);
-    }
-	
-    void printAllData() {
-	    try {
-	        String sql = "SELECT * FROM money";
-	        PreparedStatement statement = connection.prepareStatement(sql);
-	        statement.setQueryTimeout(30);
-	        ResultSet rs = statement.executeQuery();
-	        while (rs.next()) {
-	            System.out.println("--------");
-	            System.out.println("id       = " + rs.getInt("id"));
-	            System.out.println("username = " + rs.getString("username"));
-	            System.out.println("money    = " + rs.getString("money"));
-            }
-            rs.close();
-	        statement.close();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-	}
 
     private void connectSQL () {
         try {
@@ -228,7 +206,7 @@ public class SQLite3DataProvider {
             System.err.println(e.getMessage());
         }
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:" + plugin.getDataFolder().toString() + "/DataDB.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:./MoneySAPI/DataDB.db");
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);
             statement.executeUpdate(
@@ -244,7 +222,7 @@ public class SQLite3DataProvider {
         }
     }
 
-    void disConnectSQL() {
+    public void disConnectSQL() {
 	    if (connection != null) {
 	        try {
 	            connection.close();
