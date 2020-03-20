@@ -6,12 +6,14 @@ import cn.nukkit.utils.ConfigSection;
 import java.io.File;
 
 public class ConfigManager {
+    private static final ConfigManager instance = new ConfigManager();
     private Config config;
     public static int DEFAULT_MONEY;
     public static boolean DEFAULT_PUBLISH_STATUS;
     public static String MONEY_UNIT;
 
     public ConfigManager() {
+        new File("./plugins/MoneySAPI").mkdirs();
         if (!new File("./plugins/MoneySAPI/", "config.yml").exists()) {
             createConfig();
         } else {

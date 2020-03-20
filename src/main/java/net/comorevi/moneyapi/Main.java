@@ -77,115 +77,13 @@ import net.comorevi.moneyapi.util.TextValues;
 
 public class Main extends PluginBase {
 
-    public static String unit;
-    public static int defaultmoney;
-    
-    private Config translateFile;
-    private Map<String, Object> configData = new HashMap<String, Object>();
-
     @Override
     public void onEnable(){
-        getDataFolder().mkdirs();
-        this.initMessageConfig();
-        this.initHelpFile();
         this.getServer().getPluginManager().registerEvents(new EventListener(this), this);
     }
 
     @Override
     public void onDisable() {
         MoneySAPI.getInstance().disconnectSQL();
-    }
-
-    /*************/
-    /**  Utils   */
-    /*************/
-
-    public void helpMessage(CommandSender sender){
-        Thread th = new Thread(new Runnable(){
-            @Override
-            public void run() {
-                try{
-                    BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(new File(getDataFolder().toString() + "/Help.txt")), "UTF-8"));
-                    String txt;
-                    boolean op = (boolean) sender.isOp();
-                    boolean send = true;
-                    while(true){
-                        txt = br.readLine();
-                        if(txt == null)break;
-                        if(txt.startsWith("##"))continue;
-                        if(txt.equals("::op")){
-                            send = false;
-                            continue;
-                        }
-                        if(op)send = true;
-                        if(txt.equals("::all")){
-                            send = true;
-                            continue;
-                        }
-                        if(send) sender.sendMessage(txt);
-                    }
-                    br.close();
-                }catch(IOException e){
-                    e.printStackTrace();
-                }
-                return;
-            }
-        });
-        th.start();
-    }
-
-    public String translateString(String key, String... args){
-        if(configData != null || !configData.isEmpty()){
-            String src = (String) configData.get(key);
-            if(src == null || src.equals("")) return TextValues.ALERT + (String) configData.get("error-notFoundKey");
-            for(int i=0;i < args.length;i++){
-                src = src.replace("{%" + i + "}", args[i]);
-            }
-            return src;
-        }
-        return null;
-    }
-
-    public String parseMessage(String message) {
-        return "";
-    }
-
-    /**************/
-    /**   その他      **/
-    /**************/
-
-    private void initMessageConfig(){
-        if(!new File(getDataFolder().toString() + "/Message.yml").exists()){
-            try {
-                FileWriter fw = new FileWriter(new File(getDataFolder().toString() + "/Message.yml"), true);//trueで追加書き込み,falseで上書き
-                PrintWriter pw = new PrintWriter(fw);
-                pw.println("");
-                pw.close();
-                Utils.writeFile(new File(getDataFolder().toString() + "/Message.yml"), this.getClass().getClassLoader().getResourceAsStream("Message.yml"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        this.translateFile = new Config(new File(getDataFolder().toString() + "/Message.yml"), Config.YAML);
-        this.translateFile.load(getDataFolder().toString() + "/Message.yml");
-        this.configData = this.translateFile.getAll();
-        return;
-    }
-
-    public void initHelpFile(){
-    	if(!new File(getDataFolder().toString() + "/Help.txt").exists()){
-            try {
-                FileWriter fw = new FileWriter(new File(getDataFolder().toString() + "/Help.txt"), true);
-                PrintWriter pw = new PrintWriter(fw);
-                pw.println("");
-                pw.close();
-                
-                Utils.writeFile(new File(getDataFolder().toString() + "/Help.txt"), this.getClass().getClassLoader().getResourceAsStream("Help.txt"));
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-    	}
-    	return;
     }
 }

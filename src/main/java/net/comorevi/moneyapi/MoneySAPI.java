@@ -4,8 +4,6 @@ import cn.nukkit.Player;
 import net.comorevi.moneyapi.util.ConfigManager;
 import net.comorevi.moneyapi.util.SQLite3DataProvider;
 
-import java.util.LinkedList;
-
 public class MoneySAPI {
     private static MoneySAPI instance = new MoneySAPI();
     private SQLite3DataProvider dataProvider = new SQLite3DataProvider();
