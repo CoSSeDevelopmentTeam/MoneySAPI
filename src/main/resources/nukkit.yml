@@ -11,6 +11,8 @@ permissions:
     children:
       moneysapi.command:
         children:
+          moneysapi.command.moneyhelp:
+            default: true
           moneysapi.command.seemoney:
             default: true
           moneysapi.command.paymoney:
