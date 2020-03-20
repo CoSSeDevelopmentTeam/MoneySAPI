@@ -79,7 +79,7 @@ public class Main extends PluginBase {
 
     @Override
     public void onEnable(){
-        this.getServer().getPluginManager().registerEvents(new EventListener(this), this);
+        this.getServer().getPluginManager().registerEvents(new EventListener(), this);
     }
 
     @Override
