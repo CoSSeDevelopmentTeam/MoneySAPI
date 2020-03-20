@@ -206,7 +206,7 @@ public class SQLite3DataProvider {
             System.err.println(e.getMessage());
         }
         try {
-            connection = DriverManager.getConnection("jdbc:sqlite:./MoneySAPI/DataDB.db");
+            connection = DriverManager.getConnection("jdbc:sqlite:./plugins/MoneySAPI/DataDB.db");
             Statement statement = connection.createStatement();
             statement.setQueryTimeout(30);
             statement.executeUpdate(
