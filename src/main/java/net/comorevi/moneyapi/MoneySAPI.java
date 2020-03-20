@@ -7,6 +7,7 @@ import net.comorevi.moneyapi.util.SQLite3DataProvider;
 public class MoneySAPI {
     private static MoneySAPI instance = new MoneySAPI();
     private SQLite3DataProvider dataProvider = new SQLite3DataProvider();
+    public static final String UNIT = ConfigManager.MONEY_UNIT;
 
     private MoneySAPI() {
         instance = this;
