@@ -16,6 +16,7 @@ import cn.nukkit.command.ConsoleCommandSender;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.Config;
 import cn.nukkit.utils.Utils;
+import net.comorevi.moneyapi.command.GiveMoneyCommand;
 import net.comorevi.moneyapi.util.SQLite3DataProvider;
 import net.comorevi.moneyapi.util.TextValues;
 
@@ -80,6 +81,12 @@ public class Main extends PluginBase {
     @Override
     public void onEnable(){
         this.getServer().getPluginManager().registerEvents(new EventListener(), this);
+        this.getServer().getCommandMap().register("givemoney", new GiveMoneyCommand("givemoney"));
+        this.getServer().getCommandMap().register("paymoney", new GiveMoneyCommand("paymoney"));
+        this.getServer().getCommandMap().register("rankmoney", new GiveMoneyCommand("rankmoney"));
+        this.getServer().getCommandMap().register("seemoney", new GiveMoneyCommand("seemoney"));
+        this.getServer().getCommandMap().register("setmoney", new GiveMoneyCommand("setmoney"));
+        this.getServer().getCommandMap().register("takemoney", new GiveMoneyCommand("takemoney"));
     }
 
     @Override
