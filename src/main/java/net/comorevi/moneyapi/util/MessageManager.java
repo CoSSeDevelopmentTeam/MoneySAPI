@@ -87,7 +87,7 @@ public class MessageManager {
     }
 
     public void initHelpFile(){
-        if(!new File("./plugins/MoneySAPI/" + "Help.txt").exists()){
+        if(!new File("./plugins/MoneySAPI/Help.txt").exists()){
             try {
                 FileWriter fw = new FileWriter(new File("./plugins/MoneySAPI/Help.txt"), true);
                 PrintWriter pw = new PrintWriter(fw);
