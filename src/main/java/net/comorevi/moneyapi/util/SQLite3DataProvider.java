@@ -1,17 +1,18 @@
-package net.comorevi.moneyapi;
+package net.comorevi.moneyapi.util;
+
+import net.comorevi.moneyapi.Main;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public class SQLite3DataProvider {
 	
-	private MoneySAPI plugin;
+	private Main plugin;
 	private Connection connection = null;
 	
-	public SQLite3DataProvider(MoneySAPI plugin){
+	public SQLite3DataProvider(Main plugin){
 		this.plugin = plugin;
 		this.connectSQL();
 	}

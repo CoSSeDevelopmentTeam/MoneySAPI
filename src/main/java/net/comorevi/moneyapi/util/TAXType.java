@@ -1,4 +1,4 @@
-package net.comorevi.moneyapi;
+package net.comorevi.moneyapi.util;
 
 public class TAXType {
     public static final double PAY = 1.05;
