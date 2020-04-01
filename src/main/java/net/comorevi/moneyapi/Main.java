@@ -55,7 +55,9 @@ import net.comorevi.moneyapi.command.*;
  *    3.1.2
  *     - isExistsを追加
  *  4.0.0
- *   - APIをメインクラスから分離、SQLProviderの書き直し等
+ *   - APIをメインクラスから分離、SQLProviderの書き直し
+ *   - コマンドの再実装
+ *   - config.ymlとmessage.ymlの設定内容追加
  *
  */
 
