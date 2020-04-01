@@ -11,6 +11,7 @@ public class ConfigManager {
     public static int DEFAULT_MONEY;
     public static boolean DEFAULT_PUBLISH_STATUS;
     public static String MONEY_UNIT;
+    public static boolean PAY_COMMISSION;
 
     public ConfigManager() {
         new File("./plugins/MoneySAPI").mkdirs();
@@ -22,6 +23,7 @@ public class ConfigManager {
         DEFAULT_MONEY = config.getInt("DefaultMoney", 500);
         DEFAULT_PUBLISH_STATUS = config.getBoolean("Publish", false);
         MONEY_UNIT = config.getString("Unit", "MS");
+        PAY_COMMISSION = config.getBoolean("PayCommission", false);
     }
 
     private void createConfig() {
@@ -30,6 +32,7 @@ public class ConfigManager {
                 put("DefaultMoney", 500);
                 put("Publish", false);
                 put("Unit", "MS");
+                put("PayCommission", false);
             }
         };
         config = new Config(new File("./plugins/MoneySAPI/", "config.yml"), Config.YAML, cs);
