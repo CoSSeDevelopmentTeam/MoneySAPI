@@ -1,11 +1,27 @@
 name: MoneySAPI
-main: net.comorevi.moneyapi.MoneySAPI
-version: 3.1.2
+main: net.comorevi.moneyapi.Main
+version: 4.0.0
 load: POSTWORLD
 author: popkechupki
 api: ["1.0.0"]
 description: "CoSSeの基本経済プラグイン"
 
-commands: 
-  money: 
-    description: "MoneySAPIのマスターコマンド"
+permissions:
+  moneysadminshop:
+    children:
+      moneysapi.command:
+        children:
+          moneysapi.command.moneyhelp:
+            default: true
+          moneysapi.command.seemoney:
+            default: true
+          moneysapi.command.paymoney:
+            default: true
+          moneysapi.command.moneyrank:
+            default: true
+          moneysapi.command.givemoney:
+            default: op
+          moneysapi.command.takemoney:
+            default: op
+          moneysapi.command.setmoney:
+            default: op

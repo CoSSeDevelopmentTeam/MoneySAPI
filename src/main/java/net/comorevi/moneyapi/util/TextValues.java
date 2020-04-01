@@ -16,7 +16,7 @@
  *
  */
 
-package net.comorevi.moneyapi;
+package net.comorevi.moneyapi.util;
 
 import cn.nukkit.utils.TextFormat;
 
