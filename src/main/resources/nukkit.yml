@@ -3,6 +3,7 @@ main: net.comorevi.moneyapi.Main
 version: 4.0.0
 load: POSTWORLD
 author: popkechupki
+authors: ["itsu"]
 api: ["1.0.0"]
 description: "CoSSeの基本経済プラグイン"
 
