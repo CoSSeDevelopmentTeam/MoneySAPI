@@ -73,7 +73,7 @@ public class SQLite3DataProvider {
 		try {
 			if (!existsAccount(username)) return;
 
-			String sql = "DELETE FROM money WHERE location = ?";
+			String sql = "DELETE FROM money WHERE username = ?";
 			PreparedStatement statement = connection.prepareStatement(sql);
 			statement.setString(1, username);
 			statement.setQueryTimeout(30);
