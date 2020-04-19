@@ -111,6 +111,21 @@ public class DataProvider {
 			e.printStackTrace();
 		}
 	}
+
+	public void deleteTableData(String table) throws SQLException {
+		if (!table.equals(TABLE_MONEY) && !table.equals(TABLE_COIN) && !table.equals(TABLE_BANK)) throw new SQLException("Table not found.");
+		try {
+			String sql = "TRUNCATE TABLE IF EXISTS ?";
+			PreparedStatement statement = connection.prepareStatement(sql);
+			statement.setQueryTimeout(30);
+			statement.setString(1, table);
+
+			statement.executeUpdate();
+			statement.close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
 	public int getUserData(String table, String username) throws Exception {
 		if (!table.equals(TABLE_MONEY) && !table.equals(TABLE_COIN) && !table.equals(TABLE_BANK)) throw new SQLException("Table not found.");

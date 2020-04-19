@@ -4,6 +4,8 @@ import cn.nukkit.Player;
 import net.comorevi.moneyapi.util.ConfigManager;
 import net.comorevi.moneyapi.util.DataProvider;
 
+import java.sql.SQLException;
+
 public class MoneySAPI {
     private static MoneySAPI instance = new MoneySAPI();
     private DataProvider dataProvider = new DataProvider();
@@ -13,6 +15,7 @@ public class MoneySAPI {
         instance = this;
     }
 
+    /* API version 4.0- */
     public static MoneySAPI getInstance() {
         return instance;
     }
@@ -34,11 +37,19 @@ public class MoneySAPI {
     }
 
     public void registerAccount(Player player, int def, boolean publish) {
-        dataProvider.createAccount(player.getName(), def, publish);
+        try {
+            dataProvider.createUserData(DataProvider.TABLE_MONEY, player.getName(), def, publish);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void registerAccount(String playerName, int def, boolean publish) {
-        dataProvider.createAccount(playerName, def, publish);
+        try {
+            dataProvider.createUserData(DataProvider.TABLE_MONEY, playerName, def, publish);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void deleteAccount(Player player) {
@@ -46,7 +57,11 @@ public class MoneySAPI {
     }
 
     public void deleteAccount(String playerName) {
-        dataProvider.deleteAccount(playerName);
+        try {
+            dataProvider.deleteUserData(DataProvider.TABLE_MONEY, playerName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean existsAccount(Player player) {
@@ -54,7 +69,12 @@ public class MoneySAPI {
     }
 
     public boolean existsAccount(String playerName) {
-        return dataProvider.existsAccount(playerName);
+        try {
+            return dataProvider.existsUserData(DataProvider.TABLE_MONEY, playerName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void addMoney(Player player, int amount) {
@@ -62,7 +82,11 @@ public class MoneySAPI {
     }
 
     public void addMoney(String playerName, int amount) {
-        dataProvider.addMoney(playerName, amount);
+        try {
+            dataProvider.addUserData(DataProvider.TABLE_MONEY, playerName, amount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setMoney(Player player, int amount) {
@@ -70,7 +94,11 @@ public class MoneySAPI {
     }
 
     public void setMoney(String playerName, int amount) {
-        dataProvider.setMoney(playerName, amount);
+        try {
+            dataProvider.setUserData(DataProvider.TABLE_MONEY, playerName, amount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void reduceMoney(Player player, int amount) {
@@ -78,7 +106,11 @@ public class MoneySAPI {
     }
 
     public void reduceMoney(String playerName, int amount) {
-        dataProvider.reduceMoney(playerName, amount);
+        try {
+            dataProvider.reduceUserData(DataProvider.TABLE_MONEY, playerName, amount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getMoney(Player player) {
@@ -86,7 +118,12 @@ public class MoneySAPI {
     }
 
     public int getMoney(String playerName) {
-        return dataProvider.getMoney(playerName);
+        try {
+            return dataProvider.getUserData(DataProvider.TABLE_MONEY, playerName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     public void payMoney(Player payer, Player target, int amount) {
@@ -143,6 +180,82 @@ public class MoneySAPI {
 
     public String getMoneyUnit() {
         return ConfigManager.MONEY_UNIT;
+    }
+
+    /* API version 4.1- */
+    public boolean existsCoinData(Player player) {
+        try {
+            return dataProvider.existsUserData(DataProvider.TABLE_COIN, player.getName());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void createCoinData(Player player) {
+        try {
+            dataProvider.addUserData(DataProvider.TABLE_COIN, player.getName(), 0);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void createCoinData(Player player, int defValue) {
+        try {
+            dataProvider.createUserData(DataProvider.TABLE_COIN, player.getName(), defValue, false);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteCoinData() {
+        try {
+            dataProvider.deleteTableData(DataProvider.TABLE_COIN);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteCoinData(Player player) {
+        try {
+            dataProvider.deleteUserData(DataProvider.TABLE_COIN, player.getName());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getCoinData(Player player) {
+        try {
+            return dataProvider.getUserData(DataProvider.TABLE_COIN, player.getName());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        createCoinData(player);
+        return 0;
+    }
+
+    public void addCoinData(Player player, int value) {
+        try {
+            dataProvider.addUserData(DataProvider.TABLE_COIN, player.getName(), value);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void reduceCoinData(Player player, int value) {
+        try {
+            dataProvider.reduceUserData(DataProvider.TABLE_COIN, player.getName(), value);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setCoinData(Player player, int value) {
+        try {
+            dataProvider.setUserData(DataProvider.TABLE_COIN, player.getName(), value);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     protected void disconnectSQL() {
