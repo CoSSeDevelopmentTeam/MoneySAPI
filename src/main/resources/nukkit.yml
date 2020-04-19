@@ -1,6 +1,6 @@
 name: MoneySAPI
 main: net.comorevi.moneyapi.Main
-version: 4.0.1
+version: 4.1.0
 load: POSTWORLD
 author: popkechupki
 authors: ["itsu"]

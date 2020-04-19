@@ -2,11 +2,11 @@ package net.comorevi.moneyapi;
 
 import cn.nukkit.Player;
 import net.comorevi.moneyapi.util.ConfigManager;
-import net.comorevi.moneyapi.util.SQLite3DataProvider;
+import net.comorevi.moneyapi.util.DataProvider;
 
 public class MoneySAPI {
     private static MoneySAPI instance = new MoneySAPI();
-    private SQLite3DataProvider dataProvider = new SQLite3DataProvider();
+    private DataProvider dataProvider = new DataProvider();
     public static final String UNIT = ConfigManager.MONEY_UNIT;
 
     private MoneySAPI() {
