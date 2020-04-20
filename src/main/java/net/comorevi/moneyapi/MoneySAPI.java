@@ -3,12 +3,15 @@ package net.comorevi.moneyapi;
 import cn.nukkit.Player;
 import net.comorevi.moneyapi.util.ConfigManager;
 import net.comorevi.moneyapi.util.DataProvider;
+import net.comorevi.moneyapi.util.ExchangeRateCalculator;
 
 import java.sql.SQLException;
 
 public class MoneySAPI {
     private static MoneySAPI instance = new MoneySAPI();
     private DataProvider dataProvider = new DataProvider();
+    private int exchangeRate = new ExchangeRateCalculator().exchangeRate;
+
     public static final String UNIT = ConfigManager.MONEY_UNIT;
 
     private MoneySAPI() {
@@ -256,6 +259,36 @@ public class MoneySAPI {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+    }
+
+    public void exchangeCoinToMoney(Player player) throws Exception {
+        if (!existsCoinData(player)) throw new Exception("コインデータが見つかりません。");
+        int coin = getCoinData(player) / exchangeRate;
+        MoneySAPI.getInstance().addMoney(player, coin);
+        setCoinData(player, getCoinData(player) % exchangeRate);
+    }
+
+    public void exchangeCoinToMoney(Player player, int coin) throws Exception {
+        if (!existsCoinData(player)) throw new Exception("コインデータが見つかりません。");
+        int money = coin / exchangeRate;
+        MoneySAPI.getInstance().addMoney(player, money);
+        setCoinData(player, getCoinData(player) - coin + (coin % exchangeRate));
+    }
+
+    public void exchangeMoneyToCoin(Player player) {
+        setCoinData(player, getCoinData(player) + MoneySAPI.getInstance().getMoney(player) * exchangeRate);
+        MoneySAPI.getInstance().reduceMoney(player, MoneySAPI.getInstance().getMoney(player));
+    }
+
+    public void exchangeMoneyToCoin(Player player, int value) {
+        if (MoneySAPI.getInstance().isPayable(player, value)) {
+            setCoinData(player, getCoinData(player) + value * exchangeRate);
+            MoneySAPI.getInstance().reduceMoney(player, value);
+        }
+    }
+
+    public int getExchangeRate() {
+        return exchangeRate;
     }
 
     protected void disconnectSQL() {
