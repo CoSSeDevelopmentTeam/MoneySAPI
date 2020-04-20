@@ -19,11 +19,10 @@ public class DataProvider {
 	public boolean existsUserData(String table, String user) throws SQLException {
 		if (!table.equals(TABLE_MONEY) && !table.equals(TABLE_COIN) && !table.equals(TABLE_BANK)) throw new SQLException("Table not found.");
 		try {
-			String sql = "SELECT username FROM ? WHERE username = ?";
-			PreparedStatement statement = connection.prepareStatement(sql);
+			String sql = "SELECT username FROM ${tableName} WHERE username = ?";
+			PreparedStatement statement = connection.prepareStatement(sql.replace("${tableName}", table));
 			statement.setQueryTimeout(30);
-			statement.setString(1, table);
-			statement.setString(2, user);
+			statement.setString(1, user);
 
 			boolean result = statement.executeQuery().next();
 			statement.close();
@@ -38,16 +37,15 @@ public class DataProvider {
 	public List<String> getUserListHoldOverCertainAmount(String table, int amount) throws SQLException {
 		if (!table.equals(TABLE_MONEY) && !table.equals(TABLE_COIN) && !table.equals(TABLE_BANK)) throw new SQLException("Table not found.");
 	    try {
-	        String sql = "SELECT username FROM ? WHERE ? >= ?";
-	        PreparedStatement statement = connection.prepareStatement(sql);
+	        String sql = "SELECT username FROM ${tableName} WHERE ? >= ?";
+	        PreparedStatement statement = connection.prepareStatement(sql.replace("${tableName}", table));
 	        statement.setQueryTimeout(30);
-	        statement.setString(1, table);
 			if (table.equals(TABLE_MONEY)) {
-				statement.setString(2, "money");
+				statement.setString(1, "money");
 			} else {
-				statement.setString(2, "value");
+				statement.setString(1, "value");
 			}
-			statement.setInt(3, amount);
+			statement.setInt(2, amount);
 
 	        ResultSet rs = statement.executeQuery();
 	        List<String> result = new ArrayList<>();
@@ -79,12 +77,11 @@ public class DataProvider {
 				statement.executeUpdate();
 				statement.close();
 			} else {
-				String sql = "INSERT INTO ? ( username, value ) values ( ?, ? )";
-				PreparedStatement statement = connection.prepareStatement(sql);
+				String sql = "INSERT INTO ${tableName} ( username, value ) values ( ?, ? )";
+				PreparedStatement statement = connection.prepareStatement(sql.replace("${tableName}", table));
 				statement.setQueryTimeout(30);
-				statement.setString(1, table);
-				statement.setString(2, username);
-				statement.setInt(3, defValue);
+				statement.setString(1, username);
+				statement.setInt(2, defValue);
 
 				statement.executeUpdate();
 				statement.close();
@@ -99,11 +96,10 @@ public class DataProvider {
 		try {
 			if (!existsUserData(table, username)) return;
 
-			String sql = "DELETE FROM ? WHERE username = ?";
-			PreparedStatement statement = connection.prepareStatement(sql);
+			String sql = "DELETE FROM ${tableName} WHERE username = ?";
+			PreparedStatement statement = connection.prepareStatement(sql.replace("${tableName}", table));
 			statement.setQueryTimeout(30);
-			statement.setString(1, table);
-			statement.setString(2, username);
+			statement.setString(1, username);
 
 			statement.executeUpdate();
 			statement.close();
@@ -115,10 +111,9 @@ public class DataProvider {
 	public void deleteTableData(String table) throws SQLException {
 		if (!table.equals(TABLE_MONEY) && !table.equals(TABLE_COIN) && !table.equals(TABLE_BANK)) throw new SQLException("Table not found.");
 		try {
-			String sql = "TRUNCATE TABLE IF EXISTS ?";
-			PreparedStatement statement = connection.prepareStatement(sql);
+			String sql = "TRUNCATE TABLE IF EXISTS ${tableName}";
+			PreparedStatement statement = connection.prepareStatement(sql.replace("${tableName}", table));
 			statement.setQueryTimeout(30);
-			statement.setString(1, table);
 
 			statement.executeUpdate();
 			statement.close();
@@ -131,16 +126,27 @@ public class DataProvider {
 		if (!table.equals(TABLE_MONEY) && !table.equals(TABLE_COIN) && !table.equals(TABLE_BANK)) throw new SQLException("Table not found.");
 	    try {
 	        if (!existsUserData(table, username)) throw new Exception("User data not found.");
+	        if (table.equals(TABLE_MONEY)) {
+				String sql = "SELECT money FROM money WHERE username = ?";
+				PreparedStatement statement = connection.prepareStatement(sql);
+				statement.setQueryTimeout(30);
+				statement.setString(1, username);
 
-	        String sql = "SELECT money FROM money WHERE username = ?";
-            PreparedStatement statement = connection.prepareStatement(sql);
-            statement.setQueryTimeout(30);
-            statement.setString(1, username);
+				int result = statement.executeQuery().getInt("money");
+				statement.close();
 
-            int result = statement.executeQuery().getInt("money");
-            statement.close();
+				return result;
+			} else {
+				String sql = "SELECT value FROM ${tableName} WHERE username = ?";
+				PreparedStatement statement = connection.prepareStatement(sql.replace("${tableName}", table));
+				statement.setQueryTimeout(30);
+				statement.setString(1, username);
 
-            return result;
+				int result = statement.executeQuery().getInt("value");
+				statement.close();
+
+				return result;
+			}
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -153,7 +159,7 @@ public class DataProvider {
 
     public boolean getPublishStatus(String username) {
 	    try {
-	        if (!existsUserData(TABLE_MONEY, username)) return Boolean.parseBoolean(null);
+	        if (!existsUserData(TABLE_MONEY, username)) return false;
 
 	        String sql = "SELECT record FROM money WHERE username = ?";
 	        PreparedStatement statement = connection.prepareStatement(sql);
@@ -167,7 +173,7 @@ public class DataProvider {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return Boolean.parseBoolean(null);
+        return false;
     }
 	
     public void setUserData(String table, String username, int value) throws SQLException {
@@ -184,12 +190,11 @@ public class DataProvider {
 				statement.execute();
 				statement.close();
 			} else {
-				String sql = "UPDATE ? SET value = ? WHERE username = ?";
-				PreparedStatement statement = connection.prepareStatement(sql);
+				String sql = "UPDATE ${tableName} SET value = ? WHERE username = ?";
+				PreparedStatement statement = connection.prepareStatement(sql.replace("${tableName}", table));
 				statement.setQueryTimeout(30);
-				statement.setString(1, table);
-				statement.setInt(2, value);
-				statement.setString(3, username);
+				statement.setInt(1, value);
+				statement.setString(2, username);
 
 				statement.execute();
 				statement.close();
@@ -231,11 +236,10 @@ public class DataProvider {
 				statement.execute();
 				statement.close();
 			} else {
-				String sql = "UPDATE ? SET value = ? WHERE username = ?";
-				PreparedStatement statement = connection.prepareStatement(sql);
-				statement.setString(1, table);
-				statement.setInt(2, value + pocket);
-				statement.setString(3, username);
+				String sql = "UPDATE ${tableName} SET value = ? WHERE username = ?";
+				PreparedStatement statement = connection.prepareStatement(sql.replace("${tableName}", table));
+				statement.setInt(1, value + pocket);
+				statement.setString(2, username);
 
 				statement.execute();
 				statement.close();
@@ -266,17 +270,16 @@ public class DataProvider {
 				statement.execute();
 				statement.close();
 			} else {
-				String sql = "UPDATE ? SET value = ? WHERE username = ?";
-				PreparedStatement statement = connection.prepareStatement(sql);
+				String sql = "UPDATE ${tableName} SET value = ? WHERE username = ?";
+				PreparedStatement statement = connection.prepareStatement(sql.replace("${tableName}", table));
 				statement.setQueryTimeout(30);
 				if (value < 0) {
 					pocket += value;
 				} else {
 					pocket -= value;
 				}
-				statement.setString(1, table);
-				statement.setInt(2, pocket);
-				statement.setString(3, username);
+				statement.setInt(1, pocket);
+				statement.setString(2, username);
 
 				statement.execute();
 				statement.close();
