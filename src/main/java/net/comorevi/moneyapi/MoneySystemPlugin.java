@@ -61,7 +61,7 @@ import net.comorevi.moneyapi.command.*;
  *
  */
 
-public class Main extends PluginBase {
+public class MoneySystemPlugin extends PluginBase {
 
     @Override
     public void onEnable(){
