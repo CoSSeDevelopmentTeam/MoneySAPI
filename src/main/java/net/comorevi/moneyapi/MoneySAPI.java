@@ -4,8 +4,11 @@ import cn.nukkit.Player;
 import net.comorevi.moneyapi.util.ConfigManager;
 import net.comorevi.moneyapi.util.DataProvider;
 import net.comorevi.moneyapi.util.ExchangeRateCalculator;
+import net.comorevi.moneyapi.util.TAXType;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MoneySAPI {
     private static MoneySAPI instance = new MoneySAPI();
@@ -282,6 +285,32 @@ public class MoneySAPI {
 
     public int getExchangeRate() {
         return exchangeRate;
+    }
+
+    /* For MoneySAPI */
+    protected void reduceMoney() {
+        int[] ranks = {100000, 5000000, 10000000};
+        double[] rates = {TAXType.INCOME_LOW, TAXType.INCOME_MEDIUM, TAXType.INCOME_HIGH};
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        for (int i = 0; i < ranks.length; i++) {
+            try {
+                arrayList = (ArrayList<String>) dataProvider.getUserListHoldOverCertainAmount(DataProvider.TABLE_MONEY, ranks[i]);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            executeReduceMoney(arrayList, rates[i]);
+            arrayList.clear();
+        }
+    }
+
+    private void executeReduceMoney(List<String> players, double rate) {
+        players.forEach(name -> {
+            int result = (int) (getMoney(name) - (getMoney(name) * rate - getMoney(name)));
+            if (result >= 1000) {
+                reduceMoney(name, result);
+            }
+        });
     }
 
     protected void disconnectSQL() {

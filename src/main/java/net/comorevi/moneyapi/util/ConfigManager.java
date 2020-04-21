@@ -63,6 +63,15 @@ public class ConfigManager {
         return config.getStringList("IgnoreWorlds");
     }
 
+    public boolean isReduced() {
+        return config.getBoolean("STOREDDATA");
+    }
+
+    public void setReduced(boolean value) {
+        config.set("STOREDDATA", value);
+        config.save();
+    }
+
     private void createConfig() {
         ConfigSection cs = new ConfigSection(){
             {
@@ -74,6 +83,7 @@ public class ConfigManager {
                 put("PatternPhase", 1);
                 put("ExchangeRate", 150);
                 put("IgnoreWorlds", List.of("central", "life2020-01"));
+                put("STOREDDATA", false);
             }
         };
         config = new Config(new File("./plugins/MoneySAPI/", "config.yml"), Config.YAML, cs);
