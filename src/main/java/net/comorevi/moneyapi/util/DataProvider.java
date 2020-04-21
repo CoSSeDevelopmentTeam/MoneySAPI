@@ -122,7 +122,7 @@ public class DataProvider {
 		}
 	}
 	
-	public int getUserData(String table, String username) throws Exception {
+	public int getValue(String table, String username) throws Exception {
 		if (!table.equals(TABLE_MONEY) && !table.equals(TABLE_COIN) && !table.equals(TABLE_BANK)) throw new SQLException("Table not found.");
 	    try {
 	        if (!existsUserData(table, username)) throw new Exception("User data not found.");
@@ -159,7 +159,6 @@ public class DataProvider {
 
     public boolean getPublishStatus(String username) {
 	    try {
-	        if (!existsUserData(TABLE_MONEY, username)) return false;
 
 	        String sql = "SELECT record FROM money WHERE username = ?";
 	        PreparedStatement statement = connection.prepareStatement(sql);
@@ -179,7 +178,6 @@ public class DataProvider {
     public void setUserData(String table, String username, int value) throws SQLException {
 		if (!table.equals(TABLE_MONEY) && !table.equals(TABLE_COIN) && !table.equals(TABLE_BANK)) throw new SQLException("Table not found.");
 	    try {
-	        if (!existsUserData(table, username)) return;
 			if (table.equals(TABLE_MONEY)) {
 				String sql = "UPDATE money SET money = ? WHERE username = ?";
 				PreparedStatement statement = connection.prepareStatement(sql);
@@ -221,11 +219,11 @@ public class DataProvider {
         }
     }
 	
-    public void addUserData(String table, String username, int value) throws SQLException {
+    public void addValue(String table, String username, int value) throws SQLException {
 		if (!table.equals(TABLE_MONEY) && !table.equals(TABLE_COIN) && !table.equals(TABLE_BANK)) throw new SQLException("Table not found.");
 	    try {
 			if (!existsUserData(table, username)) return;
-	        int pocket = getUserData(table, username);
+	        int pocket = getValue(table, username);
 
 	        if (table.equals(TABLE_MONEY)) {
 				String sql = "UPDATE money SET money = ? WHERE username = ?";
@@ -249,11 +247,11 @@ public class DataProvider {
         }
 	}
 
-	public void reduceUserData(String table, String username, int value) throws SQLException {
+	public void reduceValue(String table, String username, int value) throws SQLException {
 		if (!table.equals(TABLE_MONEY) && !table.equals(TABLE_COIN) && !table.equals(TABLE_BANK)) throw new SQLException("Table not found.");
 	    try {
 			if (!existsUserData(table, username)) return;
-	        int pocket = getUserData(table, username);
+	        int pocket = getValue(table, username);
 
 	        if (table.equals(TABLE_MONEY)) {
 				String sql = "UPDATE money SET money = ? WHERE username = ?";

@@ -35,9 +35,9 @@ public class EventListener implements Listener{
     public void onBlockBreak(BlockBreakEvent event) {
         if (ConfigManager.getInstance().getIgnoreWorlds().contains(event.getPlayer().getLevel().getName())) return;
         if (EnumBlocks.getIds().contains(event.getBlock().getId())) {
-            MoneySAPI.getInstance().setCoinData(event.getPlayer(), EnumBlocks.getById(event.getBlock().getId()).getCoin());
+            MoneySAPI.getInstance().addCoin(event.getPlayer(), EnumBlocks.getById(event.getBlock().getId()).getCoin());
         } else {
-            MoneySAPI.getInstance().setCoinData(event.getPlayer(), 200);
+            MoneySAPI.getInstance().addCoin(event.getPlayer(), 200);
         }
     }
 
@@ -49,7 +49,7 @@ public class EventListener implements Listener{
                 EntityDamageByEntityEvent event2 = (EntityDamageByEntityEvent) event.getEntity().getLastDamageCause();
                 if (event2.getDamager() instanceof Player) {
                     Player p = (Player) event2.getDamager();
-                    MoneySAPI.getInstance().setCoinData(p, EnumMobs.getById(event.getEntity().getNetworkId()).getCoin());
+                    MoneySAPI.getInstance().addCoin(p, EnumMobs.getById(event.getEntity().getNetworkId()).getCoin());
                 }
             }
         }

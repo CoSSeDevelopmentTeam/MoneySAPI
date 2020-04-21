@@ -40,11 +40,7 @@ public class MoneySAPI {
     }
 
     public void registerAccount(Player player, int def, boolean publish) {
-        try {
-            dataProvider.createUserData(DataProvider.TABLE_MONEY, player.getName(), def, publish);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        registerAccount(player.getName(), def, publish);
     }
 
     public void registerAccount(String playerName, int def, boolean publish) {
@@ -86,7 +82,7 @@ public class MoneySAPI {
 
     public void addMoney(String playerName, int amount) {
         try {
-            dataProvider.addUserData(DataProvider.TABLE_MONEY, playerName, amount);
+            dataProvider.addValue(DataProvider.TABLE_MONEY, playerName, amount);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -110,7 +106,7 @@ public class MoneySAPI {
 
     public void reduceMoney(String playerName, int amount) {
         try {
-            dataProvider.reduceUserData(DataProvider.TABLE_MONEY, playerName, amount);
+            dataProvider.reduceValue(DataProvider.TABLE_MONEY, playerName, amount);
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -122,7 +118,7 @@ public class MoneySAPI {
 
     public int getMoney(String playerName) {
         try {
-            return dataProvider.getUserData(DataProvider.TABLE_MONEY, playerName);
+            return dataProvider.getValue(DataProvider.TABLE_MONEY, playerName);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -196,11 +192,7 @@ public class MoneySAPI {
     }
 
     public void createCoinData(Player player) {
-        try {
-            dataProvider.addUserData(DataProvider.TABLE_COIN, player.getName(), 0);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+        createCoinData(player, 0);
     }
 
     public void createCoinData(Player player, int defValue) {
@@ -227,33 +219,34 @@ public class MoneySAPI {
         }
     }
 
-    public int getCoinData(Player player) {
+    public int getCoin(Player player) {
         try {
-            return dataProvider.getUserData(DataProvider.TABLE_COIN, player.getName());
+            return dataProvider.getValue(DataProvider.TABLE_COIN, player.getName());
         } catch (Exception e) {
-            e.printStackTrace();
+            createCoinData(player);
         }
-        createCoinData(player);
         return 0;
     }
 
-    public void addCoinData(Player player, int value) {
+    public void addCoin(Player player, int value) {
+        if (!existsCoinData(player)) createCoinData(player);
         try {
-            dataProvider.addUserData(DataProvider.TABLE_COIN, player.getName(), value);
+            dataProvider.addValue(DataProvider.TABLE_COIN, player.getName(), value);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void reduceCoinData(Player player, int value) {
+    public void reduceCoin(Player player, int value) {
         try {
-            dataProvider.reduceUserData(DataProvider.TABLE_COIN, player.getName(), value);
+            dataProvider.reduceValue(DataProvider.TABLE_COIN, player.getName(), value);
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
-    public void setCoinData(Player player, int value) {
+    public void setCoin(Player player, int value) {
+        if (!existsCoinData(player)) createCoinData(player);
         try {
             dataProvider.setUserData(DataProvider.TABLE_COIN, player.getName(), value);
         } catch (SQLException e) {
@@ -263,26 +256,26 @@ public class MoneySAPI {
 
     public void exchangeCoinToMoney(Player player) throws Exception {
         if (!existsCoinData(player)) throw new Exception("コインデータが見つかりません。");
-        int coin = getCoinData(player) / exchangeRate;
+        int coin = getCoin(player) / exchangeRate;
         MoneySAPI.getInstance().addMoney(player, coin);
-        setCoinData(player, getCoinData(player) % exchangeRate);
+        setCoin(player, getCoin(player) % exchangeRate);
     }
 
     public void exchangeCoinToMoney(Player player, int coin) throws Exception {
         if (!existsCoinData(player)) throw new Exception("コインデータが見つかりません。");
         int money = coin / exchangeRate;
         MoneySAPI.getInstance().addMoney(player, money);
-        setCoinData(player, getCoinData(player) - coin + (coin % exchangeRate));
+        setCoin(player, getCoin(player) - coin + (coin % exchangeRate));
     }
 
     public void exchangeMoneyToCoin(Player player) {
-        setCoinData(player, getCoinData(player) + MoneySAPI.getInstance().getMoney(player) * exchangeRate);
+        setCoin(player, getCoin(player) + MoneySAPI.getInstance().getMoney(player) * exchangeRate);
         MoneySAPI.getInstance().reduceMoney(player, MoneySAPI.getInstance().getMoney(player));
     }
 
     public void exchangeMoneyToCoin(Player player, int value) {
         if (MoneySAPI.getInstance().isPayable(player, value)) {
-            setCoinData(player, getCoinData(player) + value * exchangeRate);
+            setCoin(player, getCoin(player) + value * exchangeRate);
             MoneySAPI.getInstance().reduceMoney(player, value);
         }
     }
