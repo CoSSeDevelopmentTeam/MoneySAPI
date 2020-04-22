@@ -24,7 +24,7 @@ public class MoneySystemPlugin extends PluginBase {
         this.getServer().getCommandMap().register("setmoney", new SetMoneyCommand("setmoney"));
         this.getServer().getCommandMap().register("takemoney", new TakeMoneyCommand("takemoney"));
 
-        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Tokyo/Asia"));
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Tokyo"));
         if (calendar.get(Calendar.HOUR_OF_DAY) != 0) ConfigManager.getInstance().setReduced(false);
         if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY && calendar.get(Calendar.HOUR_OF_DAY) == 0) {
             if (ConfigManager.getInstance().isReduced()) return;

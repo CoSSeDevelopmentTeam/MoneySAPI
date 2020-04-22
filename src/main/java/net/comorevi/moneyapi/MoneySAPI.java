@@ -306,8 +306,8 @@ public class MoneySAPI {
 
     private void executeReduceMoney(List<String> players, double rate) {
         players.forEach(name -> {
-            int result = (int) (getMoney(name) - (getMoney(name) * rate - getMoney(name)));
-            if (result >= 1000) {
+            int result = (int) (getMoney(name) * rate - getMoney(name));
+            if (getMoney(name) - result >= 1000) {
                 reduceMoney(name, result);
             }
         });

@@ -37,15 +37,15 @@ public class DataProvider {
 	public List<String> getUserListHoldOverCertainAmount(String table, int amount) throws SQLException {
 		if (!table.equals(TABLE_MONEY) && !table.equals(TABLE_COIN) && !table.equals(TABLE_BANK)) throw new SQLException("Table not found.");
 	    try {
-	        String sql = "SELECT username FROM ${tableName} WHERE ? >= ?";
-	        PreparedStatement statement = connection.prepareStatement(sql.replace("${tableName}", table));
-	        statement.setQueryTimeout(30);
-			if (table.equals(TABLE_MONEY)) {
-				statement.setString(1, "money");
+	        String sql;
+	        if (table.equals(TABLE_MONEY)) {
+				sql = "SELECT username FROM ${tableName} WHERE money >= ?";
 			} else {
-				statement.setString(1, "value");
+	        	sql = "SELECT username FROM ${tableName} WHERE value >= ?";
 			}
-			statement.setInt(2, amount);
+			PreparedStatement statement = connection.prepareStatement(sql.replace("${tableName}", table));
+	        statement.setQueryTimeout(30);
+			statement.setInt(1, amount);
 
 	        ResultSet rs = statement.executeQuery();
 	        List<String> result = new ArrayList<>();
@@ -111,11 +111,11 @@ public class DataProvider {
 	public void deleteTableData(String table) throws SQLException {
 		if (!table.equals(TABLE_MONEY) && !table.equals(TABLE_COIN) && !table.equals(TABLE_BANK)) throw new SQLException("Table not found.");
 		try {
-			String sql = "TRUNCATE TABLE IF EXISTS ${tableName}";
+			String sql = "DELETE FROM ${tableName}";
 			PreparedStatement statement = connection.prepareStatement(sql.replace("${tableName}", table));
 			statement.setQueryTimeout(30);
 
-			statement.executeUpdate();
+			statement.execute();
 			statement.close();
 		} catch (SQLException e) {
 			e.printStackTrace();

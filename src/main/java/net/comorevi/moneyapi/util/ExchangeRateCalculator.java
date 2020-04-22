@@ -15,7 +15,7 @@ public class ExchangeRateCalculator {
     private int minExchangeRate = 20;
 
     public ExchangeRateCalculator() {
-        calendar = Calendar.getInstance(TimeZone.getTimeZone("Tokyo/Asia"));
+        calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Tokyo"));
         exchangeRate = calculate();
         //System.out.println("[DEBUG] Rate: " + exchangeRate + ", Pattern: " + Main.getRatePattern() + ", PatternPhase: " + Main.getPatternPhase());
     }
