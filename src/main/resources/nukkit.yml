@@ -1,5 +1,5 @@
 name: MoneySAPI
-main: net.comorevi.moneyapi.Main
+main: net.comorevi.moneyapi.MoneySystemPlugin
 version: 4.1.0
 load: POSTWORLD
 author: popkechupki
