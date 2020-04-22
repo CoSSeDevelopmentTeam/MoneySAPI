@@ -22,7 +22,6 @@ public class ExchangeRateCalculator {
 
     private int calculate() {
         //日曜日にその週の開始レートを生成、週の変動パターンを生成
-        //if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) { //TODO: experiment
         if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY && calendar.get(Calendar.HOUR_OF_DAY) == 0) {
             //開始レート設定
             ConfigManager.getInstance().setExchangeRate(baseExchangeRate);
@@ -53,7 +52,7 @@ public class ExchangeRateCalculator {
             ConfigManager.getInstance().setPatternPhase(1);
         }
 
-        //TODO: if (calendar.get(Calendar.HOUR_OF_DAY) != 0 || calendar.get(Calendar.HOUR_OF_DAY) != 12) return Main.getExchangeRate();
+        if (calendar.get(Calendar.HOUR_OF_DAY) != 0 || calendar.get(Calendar.HOUR_OF_DAY) != 12) return ConfigManager.getInstance().getExchangeRate();
         int value;
         switch (ConfigManager.getInstance().getRatePattern()) {
             case 1:
