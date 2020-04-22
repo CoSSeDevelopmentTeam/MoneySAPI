@@ -289,8 +289,8 @@ public class MoneySAPI {
 
     /* For MoneySAPI */
     protected void reduceMoney() {
-        int[] ranks = {100000, 5000000, 10000000};
-        double[] rates = {TAXType.INCOME_LOW, TAXType.INCOME_MEDIUM, TAXType.INCOME_HIGH};
+        int[] ranks = {100000, 3000000, 5000000};
+        double[] rates = {TAXType.INCOME_LOWEST, TAXType.INCOME_LOW, TAXType.INCOME_MEDIUM};
 
         ArrayList<String> arrayList = new ArrayList<>();
         for (int i = 0; i < ranks.length; i++) {
