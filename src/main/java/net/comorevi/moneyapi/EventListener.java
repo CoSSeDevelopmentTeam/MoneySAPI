@@ -103,8 +103,15 @@ public class EventListener implements Listener{
         SANDSTONE(BlockID.SANDSTONE, 300),
         WOOD(BlockID.WOOD, 600),
         WOOD2(BlockID.WOOD2, 600),
-        LEAVE(BlockID.LEAVE, 400),
-        LEAVE2(BlockID.LEAVE2, 600);
+        LEAVE(BlockID.LEAVE, 500),
+        LEAVE2(BlockID.LEAVE2, 500),
+        DIAMOND_ORE(BlockID.DIAMOND_ORE, 1000),
+        GOLD_ORE(BlockID.GOLD_ORE, 800),
+        IRON_ORE(BlockID.IRON_ORE, 700),
+        COAL_ORE(BlockID.COAL_ORE, 700),
+        LAPIS_ORE(BlockID.LAPIS_ORE, 600),
+        REDSTONE_ORE(BlockID.REDSTONE_ORE, 600),
+        EMERALD_ORE(BlockID.EMERALD_ORE, 800);
 
         private final int id;
         private final int coin;
