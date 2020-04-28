@@ -5,7 +5,7 @@ import java.util.Random;
 import java.util.TimeZone;
 
 public class ExchangeRateCalculator {
-    public int exchangeRate;
+    private static final ExchangeRateCalculator instance = new ExchangeRateCalculator();
 
     private Calendar calendar;
     private Random random = new Random();
@@ -14,13 +14,17 @@ public class ExchangeRateCalculator {
     private int maxExchangeRate = 320;
     private int minExchangeRate = 20;
 
-    public ExchangeRateCalculator() {
+    private ExchangeRateCalculator() {
         calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Tokyo"));
-        exchangeRate = calculate();
+        //exchangeRate = calculate();
         //System.out.println("[DEBUG] Rate: " + exchangeRate + ", Pattern: " + Main.getRatePattern() + ", PatternPhase: " + Main.getPatternPhase());
     }
 
-    private int calculate() {
+    public static ExchangeRateCalculator getInstance() {
+        return instance;
+    }
+
+    public void calculate() {
         //日曜日にその週の開始レートを生成、週の変動パターンを生成
         if (calendar.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY && calendar.get(Calendar.HOUR_OF_DAY) == 0) {
             //開始レート設定
@@ -52,7 +56,7 @@ public class ExchangeRateCalculator {
             ConfigManager.getInstance().setPatternPhase(1);
         }
 
-        if (calendar.get(Calendar.HOUR_OF_DAY) != 0 || calendar.get(Calendar.HOUR_OF_DAY) != 12) return ConfigManager.getInstance().getExchangeRate();
+        if (calendar.get(Calendar.HOUR_OF_DAY) != 0 && calendar.get(Calendar.HOUR_OF_DAY) != 12) return;
         int value;
         switch (ConfigManager.getInstance().getRatePattern()) {
             case 1:
@@ -122,6 +126,5 @@ public class ExchangeRateCalculator {
                 }
                 break;
         }
-        return ConfigManager.getInstance().getExchangeRate();
     }
 }

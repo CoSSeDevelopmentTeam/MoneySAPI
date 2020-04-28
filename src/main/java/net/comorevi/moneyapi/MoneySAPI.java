@@ -13,7 +13,7 @@ import java.util.List;
 public class MoneySAPI {
     private static MoneySAPI instance = new MoneySAPI();
     private DataProvider dataProvider = new DataProvider();
-    private int exchangeRate = new ExchangeRateCalculator().exchangeRate;
+    private int exchangeRate = ConfigManager.getInstance().getExchangeRate();
 
     public static final String UNIT = ConfigManager.MONEY_UNIT;
 
