@@ -2,17 +2,26 @@ package net.comorevi.moneyapi;
 
 import cn.nukkit.Player;
 import net.comorevi.moneyapi.util.ConfigManager;
-import net.comorevi.moneyapi.util.SQLite3DataProvider;
+import net.comorevi.moneyapi.util.DataProvider;
+import net.comorevi.moneyapi.util.ExchangeRateCalculator;
+import net.comorevi.moneyapi.util.TAXType;
+
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MoneySAPI {
-    private static MoneySAPI instance = new MoneySAPI();
-    private SQLite3DataProvider dataProvider = new SQLite3DataProvider();
+    private static final MoneySAPI instance = new MoneySAPI();
+    private DataProvider dataProvider = new DataProvider();
+    private int exchangeRate = ConfigManager.getInstance().getExchangeRate();
+
     public static final String UNIT = ConfigManager.MONEY_UNIT;
 
     private MoneySAPI() {
-        instance = this;
+        //
     }
 
+    /* API version 4.0- */
     public static MoneySAPI getInstance() {
         return instance;
     }
@@ -34,11 +43,15 @@ public class MoneySAPI {
     }
 
     public void registerAccount(Player player, int def, boolean publish) {
-        dataProvider.createAccount(player.getName(), def, publish);
+        registerAccount(player.getName(), def, publish);
     }
 
     public void registerAccount(String playerName, int def, boolean publish) {
-        dataProvider.createAccount(playerName, def, publish);
+        try {
+            dataProvider.createUserData(DataProvider.TABLE_MONEY, playerName, def, publish);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void deleteAccount(Player player) {
@@ -46,7 +59,11 @@ public class MoneySAPI {
     }
 
     public void deleteAccount(String playerName) {
-        dataProvider.deleteAccount(playerName);
+        try {
+            dataProvider.deleteUserData(DataProvider.TABLE_MONEY, playerName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean existsAccount(Player player) {
@@ -54,7 +71,12 @@ public class MoneySAPI {
     }
 
     public boolean existsAccount(String playerName) {
-        return dataProvider.existsAccount(playerName);
+        try {
+            return dataProvider.existsUserData(DataProvider.TABLE_MONEY, playerName);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
     }
 
     public void addMoney(Player player, int amount) {
@@ -62,7 +84,11 @@ public class MoneySAPI {
     }
 
     public void addMoney(String playerName, int amount) {
-        dataProvider.addMoney(playerName, amount);
+        try {
+            dataProvider.addValue(DataProvider.TABLE_MONEY, playerName, amount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void setMoney(Player player, int amount) {
@@ -70,7 +96,11 @@ public class MoneySAPI {
     }
 
     public void setMoney(String playerName, int amount) {
-        dataProvider.setMoney(playerName, amount);
+        try {
+            dataProvider.setUserData(DataProvider.TABLE_MONEY, playerName, amount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public void reduceMoney(Player player, int amount) {
@@ -78,7 +108,11 @@ public class MoneySAPI {
     }
 
     public void reduceMoney(String playerName, int amount) {
-        dataProvider.reduceMoney(playerName, amount);
+        try {
+            dataProvider.reduceValue(DataProvider.TABLE_MONEY, playerName, amount);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 
     public int getMoney(Player player) {
@@ -86,7 +120,12 @@ public class MoneySAPI {
     }
 
     public int getMoney(String playerName) {
-        return dataProvider.getMoney(playerName);
+        try {
+            return dataProvider.getValue(DataProvider.TABLE_MONEY, playerName);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return -1;
     }
 
     public void payMoney(Player payer, Player target, int amount) {
@@ -143,6 +182,135 @@ public class MoneySAPI {
 
     public String getMoneyUnit() {
         return ConfigManager.MONEY_UNIT;
+    }
+
+    /* API version 4.1- */
+    public boolean existsCoinData(Player player) {
+        try {
+            return dataProvider.existsUserData(DataProvider.TABLE_COIN, player.getName());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    public void createCoinData(Player player) {
+        createCoinData(player, 0);
+    }
+
+    public void createCoinData(Player player, int defValue) {
+        try {
+            dataProvider.createUserData(DataProvider.TABLE_COIN, player.getName(), defValue, false);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteCoinData() {
+        try {
+            dataProvider.deleteTableData(DataProvider.TABLE_COIN);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void deleteCoinData(Player player) {
+        try {
+            dataProvider.deleteUserData(DataProvider.TABLE_COIN, player.getName());
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public int getCoin(Player player) {
+        try {
+            return dataProvider.getValue(DataProvider.TABLE_COIN, player.getName());
+        } catch (Exception e) {
+            createCoinData(player);
+        }
+        return 0;
+    }
+
+    public void addCoin(Player player, int value) {
+        if (!existsCoinData(player)) createCoinData(player);
+        try {
+            dataProvider.addValue(DataProvider.TABLE_COIN, player.getName(), value);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void reduceCoin(Player player, int value) {
+        try {
+            dataProvider.reduceValue(DataProvider.TABLE_COIN, player.getName(), value);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void setCoin(Player player, int value) {
+        if (!existsCoinData(player)) createCoinData(player);
+        try {
+            dataProvider.setUserData(DataProvider.TABLE_COIN, player.getName(), value);
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void exchangeCoinToMoney(Player player) throws Exception {
+        if (!existsCoinData(player)) throw new Exception("コインデータが見つかりません。");
+        int coin = getCoin(player) / exchangeRate;
+        MoneySAPI.getInstance().addMoney(player, coin);
+        setCoin(player, getCoin(player) % exchangeRate);
+    }
+
+    public void exchangeCoinToMoney(Player player, int coin) throws Exception {
+        if (!existsCoinData(player)) throw new Exception("コインデータが見つかりません。");
+        int money = coin / exchangeRate;
+        MoneySAPI.getInstance().addMoney(player, money);
+        setCoin(player, getCoin(player) - coin + (coin % exchangeRate));
+    }
+
+    public void exchangeMoneyToCoin(Player player) {
+        setCoin(player, getCoin(player) + MoneySAPI.getInstance().getMoney(player) * exchangeRate);
+        MoneySAPI.getInstance().reduceMoney(player, MoneySAPI.getInstance().getMoney(player));
+    }
+
+    public void exchangeMoneyToCoin(Player player, int value) {
+        if (MoneySAPI.getInstance().isPayable(player, value)) {
+            setCoin(player, getCoin(player) + value * exchangeRate);
+            MoneySAPI.getInstance().reduceMoney(player, value);
+        }
+    }
+
+    public int getExchangeRate() {
+        return exchangeRate;
+    }
+
+    /* For MoneySAPI */
+    protected void reduceMoney() {
+        int[] ranks = {100000, 3000000, 5000000};
+        double[] rates = {TAXType.INCOME_LOWEST, TAXType.INCOME_LOW, TAXType.INCOME_MEDIUM};
+
+        ArrayList<String> arrayList = new ArrayList<>();
+        for (int i = 0; i < ranks.length; i++) {
+            try {
+                arrayList = (ArrayList<String>) dataProvider.getUserListHoldOverCertainAmount(DataProvider.TABLE_MONEY, ranks[i]);
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+            executeReduceMoney(arrayList, rates[i]);
+            arrayList.clear();
+        }
+    }
+
+    private void executeReduceMoney(List<String> players, double rate) {
+        players.forEach(name -> {
+            int result = (int) (getMoney(name) * rate - getMoney(name));
+            if (getMoney(name) - result >= 1000) {
+                reduceMoney(name, result);
+            }
+        });
     }
 
     protected void disconnectSQL() {
