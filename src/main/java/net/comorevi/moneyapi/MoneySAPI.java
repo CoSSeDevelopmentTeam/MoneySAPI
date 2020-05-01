@@ -11,14 +11,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class MoneySAPI {
-    private static MoneySAPI instance = new MoneySAPI();
+    private static final MoneySAPI instance = new MoneySAPI();
     private DataProvider dataProvider = new DataProvider();
     private int exchangeRate = ConfigManager.getInstance().getExchangeRate();
 
     public static final String UNIT = ConfigManager.MONEY_UNIT;
 
     private MoneySAPI() {
-        instance = this;
+        //
     }
 
     /* API version 4.0- */

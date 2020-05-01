@@ -14,8 +14,11 @@ import java.util.TimeZone;
 
 public class MoneySystemPlugin extends PluginBase {
 
+    private static MoneySystemPlugin instance;
+
     @Override
     public void onEnable(){
+        instance = this;
         this.getServer().getPluginManager().registerEvents(new EventListener(), this);
         this.getServer().getCommandMap().register("givemoney", new GiveMoneyCommand("givemoney"));
         this.getServer().getCommandMap().register("moneyhelp", new HelpMoneyCommand("moneyhelp"));
@@ -42,5 +45,9 @@ public class MoneySystemPlugin extends PluginBase {
     @Override
     public void onDisable() {
         MoneySAPI.getInstance().disconnectSQL();
+    }
+
+    public static MoneySystemPlugin getInstance() {
+        return instance;
     }
 }

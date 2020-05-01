@@ -1,0 +1,24 @@
+## 初回ログインで与えられる金額
+DefaultMoney: 500
+## 所持金を公開するかの標準設定
+Publish: false
+## お金の単位
+Unit: MS
+## 支払い(payMoney())を利用したときに手数料5%をとるか
+PayCommission: true
+## ブロックを破壊してもコインが手に入らないワールド
+IgnoreWorlds:
+  - central
+  - life2020-01
+
+###############
+# DONT change #
+###############
+## コインと基準通貨の交換レートのパターン
+RatePattern: 1
+## パターンのなかでどのフェーズにいるか
+PatternPhase: 1
+## コインと基準通貨の交換レート
+ExchangeRate: 150
+## データ削除を2回しないようにするため
+StoredData: false

@@ -1,13 +1,13 @@
 package net.comorevi.moneyapi.util;
 
 import cn.nukkit.utils.Config;
-import cn.nukkit.utils.ConfigSection;
+import net.comorevi.moneyapi.MoneySystemPlugin;
 
 import java.io.File;
 import java.util.List;
 
 public class ConfigManager {
-    private static ConfigManager instance = new ConfigManager();
+    private static final ConfigManager instance = new ConfigManager();
     private Config config;
     public static int DEFAULT_MONEY;
     public static boolean DEFAULT_PUBLISH_STATUS;
@@ -15,13 +15,9 @@ public class ConfigManager {
     public static boolean PAY_COMMISSION;
 
     private ConfigManager() {
-        instance = this;
         new File("./plugins/MoneySAPI").mkdirs();
-        if (!new File("./plugins/MoneySAPI/", "config.yml").exists()) {
-            createConfig();
-        } else {
-            config = new Config(new File("./plugins/MoneySAPI/", "config.yml"), Config.YAML);
-        }
+        MoneySystemPlugin.getInstance().saveDefaultConfig();
+        config = MoneySystemPlugin.getInstance().getConfig();
         DEFAULT_MONEY = config.getInt("DefaultMoney", 500);
         DEFAULT_PUBLISH_STATUS = config.getBoolean("Publish", false);
         MONEY_UNIT = config.getString("Unit", "MS");
@@ -64,29 +60,11 @@ public class ConfigManager {
     }
 
     public boolean isReduced() {
-        return config.getBoolean("STOREDDATA");
+        return config.getBoolean("StoredData");
     }
 
     public void setReduced(boolean value) {
-        config.set("STOREDDATA", value);
-        config.save();
-    }
-
-    private void createConfig() {
-        ConfigSection cs = new ConfigSection(){
-            {
-                put("DefaultMoney", 500);
-                put("Publish", false);
-                put("Unit", "MS");
-                put("PayCommission", false);
-                put("RatePattern", 1);
-                put("PatternPhase", 1);
-                put("ExchangeRate", 150);
-                put("IgnoreWorlds", List.of("central", "life2020-01"));
-                put("STOREDDATA", false);
-            }
-        };
-        config = new Config(new File("./plugins/MoneySAPI/", "config.yml"), Config.YAML, cs);
+        config.set("StoredData", value);
         config.save();
     }
 }
