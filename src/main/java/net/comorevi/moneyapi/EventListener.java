@@ -29,6 +29,10 @@ public class EventListener implements Listener{
         }else{
             event.getPlayer().sendMessage(TextValues.INFO + message.translateString("player-account-load", event.getPlayer().getName(), String.valueOf(MoneySAPI.getInstance().getMoney(event.getPlayer())), MoneySAPI.UNIT));
         }
+
+        if (ConfigManager.getInstance().enabledShowRank()) {
+            MoneySystemPlugin.getInstance().showMoneyRank(event.getPlayer());
+        }
     }
 
     @EventHandler

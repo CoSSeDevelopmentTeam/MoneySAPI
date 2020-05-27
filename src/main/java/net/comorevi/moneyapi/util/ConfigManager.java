@@ -67,4 +67,12 @@ public class ConfigManager {
         config.set("StoredData", value);
         config.save();
     }
+
+    public boolean enabledShowRank() {
+        return config.getBoolean("ShowRankBoard");
+    }
+
+    public String getShowingLevelName() {
+        return config.getString("RankBoardLevel");
+    }
 }
