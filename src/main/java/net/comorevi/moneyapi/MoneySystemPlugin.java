@@ -1,16 +1,11 @@
 package net.comorevi.moneyapi;
 
-import cn.nukkit.Player;
-import cn.nukkit.Server;
-import cn.nukkit.level.particle.FloatingTextParticle;
 import cn.nukkit.plugin.PluginBase;
-import cn.nukkit.utils.TextFormat;
 import net.comorevi.moneyapi.command.*;
 import net.comorevi.moneyapi.util.ConfigManager;
 import net.comorevi.moneyapi.util.ExchangeRateCalculator;
 
 import java.util.Calendar;
-import java.util.List;
 import java.util.TimeZone;
 
 /*
@@ -20,7 +15,6 @@ import java.util.TimeZone;
 public class MoneySystemPlugin extends PluginBase {
 
     private static MoneySystemPlugin instance;
-    private FloatingTextParticle particle;
 
     @Override
     public void onEnable(){
@@ -46,36 +40,11 @@ public class MoneySystemPlugin extends PluginBase {
             MoneySAPI.getInstance().reduceMoney();
             ConfigManager.getInstance().setReduced(true);
         }
-
-        if (ConfigManager.getInstance().enabledShowRank()) {
-            particle = new FloatingTextParticle(Server.getInstance().getLevelByName(ConfigManager.getInstance().getShowingLevelName()).getSafeSpawn().up(4).east(3), TextFormat.GOLD + "☆--- 所持金ランキング ---☆", getRankString(5));
-            getServer().getScheduler().scheduleRepeatingTask(this, new Runnable() {
-                @Override
-                public void run() {
-                    particle.setText(getRankString(5));
-                    Server.getInstance().getLevelByName(ConfigManager.getInstance().getShowingLevelName()).addParticle(particle, Server.getInstance().getOnlinePlayers().values());
-                }
-            }, 1200, true);
-        }
     }
 
     @Override
     public void onDisable() {
         MoneySAPI.getInstance().disconnectSQL();
-    }
-
-    public void showMoneyRank(Player player) {
-        Server.getInstance().getLevelByName(ConfigManager.getInstance().getShowingLevelName()).addParticle(particle, player);
-    }
-
-    public String getRankString(int range) {
-        StringBuilder sb = new StringBuilder();
-        List<String> rankList = MoneySAPI.getInstance().getMoneyRankList(range);
-        for (int i = 0; i < rankList.size(); i++) {
-            if (!MoneySAPI.getInstance().existsAccount(rankList.get(i))) break;
-            sb.append(i + 1).append(": ").append(rankList.get(i)).append(", ").append(MoneySAPI.getInstance().getMoney(rankList.get(i))).append(MoneySAPI.UNIT).append("\n");
-        }
-        return sb.toString();
     }
 
     public static MoneySystemPlugin getInstance() {

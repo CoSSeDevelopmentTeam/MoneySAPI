@@ -3,10 +3,12 @@ package net.comorevi.moneyapi;
 import cn.nukkit.Player;
 import net.comorevi.moneyapi.util.ConfigManager;
 import net.comorevi.moneyapi.util.DataProvider;
+import net.comorevi.moneyapi.util.ExchangeRateCalculator;
 import net.comorevi.moneyapi.util.TAXType;
 
 import java.sql.SQLException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MoneySAPI {
     private static final MoneySAPI instance = new MoneySAPI();
@@ -172,16 +174,11 @@ public class MoneySAPI {
         return dataProvider.getPublishStatus(playerName);
     }
 
-    public LinkedHashMap<String, Integer> getMoneyRank(int limit) {
-        String[] rankedPlayerNames = dataProvider.getRanking(limit);
-        LinkedHashMap<String, Integer> result = new LinkedHashMap<>();
-        Arrays.asList(rankedPlayerNames).forEach(name -> result.put(name, getMoney(name)));
-        return result;
+    /*
+    public LinkedList<String> getMoneyRank(int limit) {
+        return null;
     }
-
-    public List<String> getMoneyRankList(int limit) {
-        return Arrays.asList(dataProvider.getRanking(limit));
-    }
+     */
 
     public String getMoneyUnit() {
         return ConfigManager.MONEY_UNIT;

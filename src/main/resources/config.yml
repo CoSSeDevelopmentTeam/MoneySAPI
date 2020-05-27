@@ -10,10 +10,6 @@ PayCommission: true
 IgnoreWorlds:
   - central
   - life2020-01
-## 所持金ランキングを表示
-ShowRankBoard: false
-## 所持金を表示するワールドの名前
-RankBoardLevel: "life2020-01"
 
 ###############
 # DONT change #

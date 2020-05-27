@@ -2,7 +2,6 @@ package net.comorevi.moneyapi.util;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -154,26 +153,8 @@ public class DataProvider {
 	    throw new Exception("User data not found.");
 	}
 
-	public String[] getRanking(int range) {
-		try {
-			String sql = "SELECT i1.username , ( SELECT count(*) FROM money AS i2 WHERE i2.money > i1.money ) + 1 AS rank FROM money AS i1";
-			PreparedStatement statement = connection.prepareStatement(sql);
-
-			String[] rankedNames = new String[range];
-			ResultSet rs = statement.executeQuery();
-			while (rs.next()) {
-				if (rs.getInt("rank") <= range) {
-					rankedNames[rs.getInt("rank") - 1] = rs.getString("username");
-				}
-			}
-			rs.close();
-			statement.close();
-
-			return rankedNames;
-		} catch (SQLException e) {
-			e.printStackTrace();
-		}
-		return null;
+	public Map<Integer, Map<String, Integer>> getRanking(int range) {
+	    return null;
     }
 
     public boolean getPublishStatus(String username) {
