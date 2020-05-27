@@ -12,7 +12,7 @@ public class HelpMoneyCommand extends Command {
 
     @Override
     public boolean execute(CommandSender commandSender, String s, String[] strings) {
-        if (commandSender.hasPermission("moneysapi.command.moneyhelp")) {
+        if (!commandSender.hasPermission("moneysapi.command.moneyhelp")) {
             commandSender.sendMessage(TextValues.ALERT+ MessageManager.getInstance().translateString("error-no-permission"));
             return true;
         }
