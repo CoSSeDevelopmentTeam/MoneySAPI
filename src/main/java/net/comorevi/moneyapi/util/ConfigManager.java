@@ -4,7 +4,6 @@ import cn.nukkit.utils.Config;
 import net.comorevi.moneyapi.MoneySystemPlugin;
 
 import java.io.File;
-import java.util.List;
 
 public class ConfigManager {
     private static final ConfigManager instance = new ConfigManager();
@@ -55,10 +54,6 @@ public class ConfigManager {
         config.save();
     }
 
-    public List<String> getIgnoreWorlds() {
-        return config.getStringList("IgnoreWorlds");
-    }
-
     public boolean isReduced() {
         return config.getBoolean("StoredData");
     }
@@ -66,5 +61,13 @@ public class ConfigManager {
     public void setReduced(boolean value) {
         config.set("StoredData", value);
         config.save();
+    }
+
+    public boolean enabledShowRank() {
+        return config.getBoolean("ShowRankBoard");
+    }
+
+    public String getShowingLevelName() {
+        return config.getString("RankBoardLevel");
     }
 }

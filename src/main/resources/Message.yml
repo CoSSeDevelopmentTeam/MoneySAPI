@@ -6,6 +6,7 @@ player-account-money-take: "{%0}さんの所持金から{%1}{%2}を没収しま�
 player-account-money-give: "{%0}さんに{%1}{%2}を付与しました。"
 player-account-not-found: "{%0}さんのアカウントは見つかりませんでした。"
 player-pay-money: "{%0}さんに{%1}{%2}支払いました。"
+player-rank-title: "所持金ランキング"
 error-no-permission: "このコマンドを実行する権限がありません。"
 error-command-args: "コマンドの実行に必要な項目を入力してください。"
 error-command-args-num: "正の数値を入力してください。"

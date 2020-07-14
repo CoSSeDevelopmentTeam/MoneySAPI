@@ -20,7 +20,7 @@ public class PayMoneyCommand extends Command {
             return true;
         }
 
-        if (commandSender.hasPermission("moneysapi.command.paymoney")) {
+        if (!commandSender.hasPermission("moneysapi.command.paymoney")) {
             commandSender.sendMessage(TextValues.ALERT+ MessageManager.getInstance().translateString("error-no-permission"));
             return true;
         }
