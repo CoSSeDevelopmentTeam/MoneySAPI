@@ -6,10 +6,6 @@ Publish: false
 Unit: MS
 ## 支払い(payMoney())を利用したときに手数料5%をとるか
 PayCommission: true
-## ブロックを破壊してもコインが手に入らないワールド
-IgnoreWorlds:
-  - central
-  - life2020-01
 ## 所持金ランキングを表示
 ShowRankBoard: false
 ## 所持金を表示するワールドの名前

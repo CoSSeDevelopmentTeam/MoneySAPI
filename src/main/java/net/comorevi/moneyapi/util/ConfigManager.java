@@ -4,7 +4,6 @@ import cn.nukkit.utils.Config;
 import net.comorevi.moneyapi.MoneySystemPlugin;
 
 import java.io.File;
-import java.util.List;
 
 public class ConfigManager {
     private static final ConfigManager instance = new ConfigManager();
@@ -53,10 +52,6 @@ public class ConfigManager {
     public void setRatePattern(int pattern) {
         config.set("RatePattern", pattern);
         config.save();
-    }
-
-    public List<String> getIgnoreWorlds() {
-        return config.getStringList("IgnoreWorlds");
     }
 
     public boolean isReduced() {
