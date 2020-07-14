@@ -1,11 +1,11 @@
-package net.comorevi.moneyapi;
+package net.comorevi.np.moneys;
 
 import cn.nukkit.event.EventHandler;
 import cn.nukkit.event.Listener;
 import cn.nukkit.event.player.PlayerJoinEvent;
-import net.comorevi.moneyapi.util.ConfigManager;
-import net.comorevi.moneyapi.util.MessageManager;
-import net.comorevi.moneyapi.util.TextValues;
+import net.comorevi.np.moneys.util.ConfigManager;
+import net.comorevi.np.moneys.util.MessageManager;
+import net.comorevi.np.moneys.util.TextValues;
 
 public class EventListener implements Listener{
     private final MessageManager message = MessageManager.getInstance();

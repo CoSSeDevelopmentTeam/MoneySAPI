@@ -1,9 +1,9 @@
-package net.comorevi.moneyapi;
+package net.comorevi.np.moneys;
 
 import cn.nukkit.Player;
-import net.comorevi.moneyapi.util.ConfigManager;
-import net.comorevi.moneyapi.util.DataProvider;
-import net.comorevi.moneyapi.util.TaxType;
+import net.comorevi.np.moneys.util.ConfigManager;
+import net.comorevi.np.moneys.util.DataProvider;
+import net.comorevi.np.moneys.util.TaxType;
 
 import java.sql.SQLException;
 import java.util.*;
