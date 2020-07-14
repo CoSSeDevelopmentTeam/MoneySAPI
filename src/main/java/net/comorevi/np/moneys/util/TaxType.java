@@ -1,4 +1,4 @@
-package net.comorevi.moneyapi.util;
+package net.comorevi.np.moneys.util;
 
 public enum TaxType {
     PAYMENT(1.05),

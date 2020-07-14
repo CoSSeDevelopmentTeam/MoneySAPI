@@ -1,12 +1,12 @@
-package net.comorevi.moneyapi.command;
+package net.comorevi.np.moneys.command;
 
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import net.comorevi.moneyapi.MoneySAPI;
-import net.comorevi.moneyapi.util.ConfigManager;
-import net.comorevi.moneyapi.util.MessageManager;
-import net.comorevi.moneyapi.util.TaxType;
-import net.comorevi.moneyapi.util.TextValues;
+import net.comorevi.np.moneys.MoneySAPI;
+import net.comorevi.np.moneys.util.ConfigManager;
+import net.comorevi.np.moneys.util.MessageManager;
+import net.comorevi.np.moneys.util.TaxType;
+import net.comorevi.np.moneys.util.TextValues;
 
 public class PayMoneyCommand extends Command {
     public PayMoneyCommand(String name) {

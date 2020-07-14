@@ -1,4 +1,4 @@
-package net.comorevi.moneyapi.util;
+package net.comorevi.np.moneys.util;
 
 import java.util.Calendar;
 import java.util.Random;

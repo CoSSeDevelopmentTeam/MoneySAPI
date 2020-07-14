@@ -1,13 +1,13 @@
-package net.comorevi.moneyapi;
+package net.comorevi.np.moneys;
 
 import cn.nukkit.Player;
 import cn.nukkit.Server;
 import cn.nukkit.level.particle.FloatingTextParticle;
 import cn.nukkit.plugin.PluginBase;
 import cn.nukkit.utils.TextFormat;
-import net.comorevi.moneyapi.command.*;
-import net.comorevi.moneyapi.util.ConfigManager;
-import net.comorevi.moneyapi.util.ExchangeRateCalculator;
+import net.comorevi.np.moneys.command.*;
+import net.comorevi.np.moneys.util.ConfigManager;
+import net.comorevi.np.moneys.util.ExchangeRateCalculator;
 
 import java.util.Calendar;
 import java.util.List;

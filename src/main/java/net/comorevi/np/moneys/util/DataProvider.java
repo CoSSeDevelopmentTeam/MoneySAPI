@@ -1,10 +1,8 @@
-package net.comorevi.moneyapi.util;
+package net.comorevi.np.moneys.util;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 public class DataProvider {
 

@@ -1,10 +1,10 @@
-package net.comorevi.moneyapi.command;
+package net.comorevi.np.moneys.command;
 
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import net.comorevi.moneyapi.MoneySystemPlugin;
-import net.comorevi.moneyapi.util.MessageManager;
-import net.comorevi.moneyapi.util.TextValues;
+import net.comorevi.np.moneys.MoneySystemPlugin;
+import net.comorevi.np.moneys.util.MessageManager;
+import net.comorevi.np.moneys.util.TextValues;
 
 public class RankMoneyCommand extends Command {
     public RankMoneyCommand(String name) {

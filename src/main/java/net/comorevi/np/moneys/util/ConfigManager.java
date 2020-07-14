@@ -1,7 +1,7 @@
-package net.comorevi.moneyapi.util;
+package net.comorevi.np.moneys.util;
 
 import cn.nukkit.utils.Config;
-import net.comorevi.moneyapi.MoneySystemPlugin;
+import net.comorevi.np.moneys.MoneySystemPlugin;
 
 import java.io.File;
 

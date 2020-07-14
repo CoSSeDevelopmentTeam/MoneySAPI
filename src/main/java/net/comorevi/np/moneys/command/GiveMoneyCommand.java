@@ -1,19 +1,19 @@
-package net.comorevi.moneyapi.command;
+package net.comorevi.np.moneys.command;
 
 import cn.nukkit.command.Command;
 import cn.nukkit.command.CommandSender;
-import net.comorevi.moneyapi.MoneySAPI;
-import net.comorevi.moneyapi.util.MessageManager;
-import net.comorevi.moneyapi.util.TextValues;
+import net.comorevi.np.moneys.MoneySAPI;
+import net.comorevi.np.moneys.util.MessageManager;
+import net.comorevi.np.moneys.util.TextValues;
 
-public class TakeMoneyCommand extends Command {
-    public TakeMoneyCommand(String name) {
-        super(name, "プレイヤーから指定した金額を没収します。", "/takemoney <target: 名前> <amount: 金額>");
+public class GiveMoneyCommand extends Command {
+    public GiveMoneyCommand(String name) {
+        super(name, "プレイヤーに指定した金額を与えます。", "/givemoney <target: 名前> <amount: 金額>");
     }
 
     @Override
     public boolean execute(CommandSender commandSender, String s, String[] strings) {
-        if (!commandSender.hasPermission("moneys.api.takemoney")) {
+        if (!commandSender.hasPermission("moneys.api.givemoney")) {
             commandSender.sendMessage(TextValues.ALERT+ MessageManager.getInstance().translateString("error-no-permission"));
             return true;
         }
@@ -33,8 +33,8 @@ public class TakeMoneyCommand extends Command {
             return false;
         }
 
-        MoneySAPI.getInstance().reduceMoney(strings[0], Integer.parseInt(strings[1]));
-        commandSender.sendMessage(TextValues.INFO+MessageManager.getInstance().translateString("player-account-money-take", strings[0], strings[1], MoneySAPI.UNIT));
+        MoneySAPI.getInstance().addMoney(strings[0], Integer.parseInt(strings[1]));
+        commandSender.sendMessage(TextValues.INFO+MessageManager.getInstance().translateString("player-account-money-give", strings[0], strings[1], MoneySAPI.UNIT));
         return true;
     }
 

@@ -1,4 +1,4 @@
-package net.comorevi.moneyapi.util;
+package net.comorevi.np.moneys.util;
 
 import cn.nukkit.command.CommandSender;
 import cn.nukkit.utils.Config;
