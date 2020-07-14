@@ -13,7 +13,7 @@ public class SeeMoneyCommand extends Command {
 
     @Override
     public boolean execute(CommandSender commandSender, String s, String[] strings) {
-        if (!commandSender.hasPermission("moneysapi.command.seemoney")) {
+        if (!commandSender.hasPermission("moneys.api.seemoney")) {
             commandSender.sendMessage(TextValues.ALERT+ MessageManager.getInstance().translateString("error-no-permission"));
             return true;
         }
