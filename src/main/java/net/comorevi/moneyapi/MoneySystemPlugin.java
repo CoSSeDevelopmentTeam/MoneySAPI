@@ -26,13 +26,13 @@ public class MoneySystemPlugin extends PluginBase {
     public void onEnable(){
         instance = this;
         this.getServer().getPluginManager().registerEvents(new EventListener(), this);
-        this.getServer().getCommandMap().register("givemoney", new GiveMoneyCommand("givemoney"));
-        this.getServer().getCommandMap().register("moneyhelp", new HelpMoneyCommand("moneyhelp"));
-        this.getServer().getCommandMap().register("paymoney", new PayMoneyCommand("paymoney"));
-        this.getServer().getCommandMap().register("rankmoney", new RankMoneyCommand("rankmoney"));
-        this.getServer().getCommandMap().register("seemoney", new SeeMoneyCommand("seemoney"));
-        this.getServer().getCommandMap().register("setmoney", new SetMoneyCommand("setmoney"));
-        this.getServer().getCommandMap().register("takemoney", new TakeMoneyCommand("takemoney"));
+        this.getServer().getCommandMap().register("MoneySAPI", new GiveMoneyCommand("givemoney"));
+        this.getServer().getCommandMap().register("MoneySAPI", new HelpMoneyCommand("moneyhelp"));
+        this.getServer().getCommandMap().register("MoneySAPI", new PayMoneyCommand("paymoney"));
+        this.getServer().getCommandMap().register("MoneySAPI", new RankMoneyCommand("rankmoney"));
+        this.getServer().getCommandMap().register("MoneySAPI", new SeeMoneyCommand("seemoney"));
+        this.getServer().getCommandMap().register("MoneySAPI", new SetMoneyCommand("setmoney"));
+        this.getServer().getCommandMap().register("MoneySAPI", new TakeMoneyCommand("takemoney"));
 
         ExchangeRateCalculator.getInstance().calculate();
         Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("Asia/Tokyo"));
