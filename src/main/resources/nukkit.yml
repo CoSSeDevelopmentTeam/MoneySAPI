@@ -1,6 +1,6 @@
 name: MoneySAPI
 main: net.comorevi.moneyapi.MoneySystemPlugin
-version: 4.1.2
+version: 5.0.0
 load: POSTWORLD
 author: popkechupki
 authors: ["itsu"]
@@ -8,21 +8,21 @@ api: ["1.0.0"]
 description: "CoSSeの基本経済プラグイン"
 
 permissions:
-  moneysadminshop:
+  moneys:
     children:
-      moneysapi.command:
+      moneys.api:
         children:
-          moneysapi.command.moneyhelp:
+          moneys.api.moneyhelp:
             default: true
-          moneysapi.command.seemoney:
+          moneys.api.seemoney:
             default: true
-          moneysapi.command.paymoney:
+          moneys.api.paymoney:
             default: true
-          moneysapi.command.moneyrank:
+          moneys.api.moneyrank:
             default: true
-          moneysapi.command.givemoney:
+          moneys.api.givemoney:
             default: op
-          moneysapi.command.takemoney:
+          moneys.api.takemoney:
             default: op
-          moneysapi.command.setmoney:
+          moneys.api.setmoney:
             default: op

@@ -5,7 +5,7 @@ import cn.nukkit.command.CommandSender;
 import net.comorevi.moneyapi.MoneySAPI;
 import net.comorevi.moneyapi.util.ConfigManager;
 import net.comorevi.moneyapi.util.MessageManager;
-import net.comorevi.moneyapi.util.TAXType;
+import net.comorevi.moneyapi.util.TaxType;
 import net.comorevi.moneyapi.util.TextValues;
 
 public class PayMoneyCommand extends Command {
@@ -20,7 +20,7 @@ public class PayMoneyCommand extends Command {
             return true;
         }
 
-        if (!commandSender.hasPermission("moneysapi.command.paymoney")) {
+        if (!commandSender.hasPermission("moneys.api.paymoney")) {
             commandSender.sendMessage(TextValues.ALERT+ MessageManager.getInstance().translateString("error-no-permission"));
             return true;
         }
@@ -42,13 +42,13 @@ public class PayMoneyCommand extends Command {
 
         if (ConfigManager.PAY_COMMISSION) {
             if (MoneySAPI.getInstance().isPayable(commandSender.getName(), Integer.parseInt(strings[1]))) {
-                MoneySAPI.getInstance().payMoney(strings[0], commandSender.getName(), Integer.parseInt(strings[1]), TAXType.PAY);
+                MoneySAPI.getInstance().payMoney(strings[0], commandSender.getName(), Integer.parseInt(strings[1]), TaxType.PAYMENT);
                 commandSender.sendMessage(TextValues.INFO+MessageManager.getInstance().translateString("player-pay-money", strings[0], strings[1], MoneySAPI.UNIT));
             } else {
                 commandSender.sendMessage(TextValues.ALERT+MessageManager.getInstance().translateString("error-player-account-lack-of-money"));
             }
         } else {
-            if (MoneySAPI.getInstance().isPayable(commandSender.getName(), (int) (Integer.parseInt(strings[1]) * TAXType.PAY))) {
+            if (MoneySAPI.getInstance().isPayable(commandSender.getName(), Integer.parseInt(strings[1]))) {
                 MoneySAPI.getInstance().payMoney(strings[0], commandSender.getName(), Integer.parseInt(strings[1]));
                 commandSender.sendMessage(TextValues.INFO+MessageManager.getInstance().translateString("player-pay-money", strings[0], strings[1], MoneySAPI.UNIT));
             } else {

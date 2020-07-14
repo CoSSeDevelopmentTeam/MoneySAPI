@@ -13,7 +13,7 @@ public class RankMoneyCommand extends Command {
 
     @Override
     public boolean execute(CommandSender commandSender, String s, String[] strings) {
-        if (!commandSender.hasPermission("moneysapi.command.moneyrank")) {
+        if (!commandSender.hasPermission("moneys.api.moneyrank")) {
             commandSender.sendMessage(TextValues.ALERT+ MessageManager.getInstance().translateString("error-no-permission"));
             return true;
         }

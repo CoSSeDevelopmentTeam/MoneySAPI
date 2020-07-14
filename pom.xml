@@ -4,7 +4,7 @@
 
     <groupId>net.comorevi</groupId>
     <artifactId>MoneySAPI</artifactId>
-    <version>4.1-SNAPSHOT</version>
+    <version>5.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>MoneySAPI</name>
@@ -56,6 +56,7 @@
                                     <include>org.xerial:sqlite-jdbc</include>
                                 </includes>
                             </artifactSet>
+                            <createDependencyReducedPom>false</createDependencyReducedPom>
                         </configuration>
                     </execution>
                 </executions>

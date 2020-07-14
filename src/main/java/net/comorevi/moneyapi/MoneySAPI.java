@@ -3,7 +3,7 @@ package net.comorevi.moneyapi;
 import cn.nukkit.Player;
 import net.comorevi.moneyapi.util.ConfigManager;
 import net.comorevi.moneyapi.util.DataProvider;
-import net.comorevi.moneyapi.util.TAXType;
+import net.comorevi.moneyapi.util.TaxType;
 
 import java.sql.SQLException;
 import java.util.*;
@@ -137,13 +137,13 @@ public class MoneySAPI {
         }
     }
 
-    public void payMoney(Player payer, Player target, int amount, double commissionRatio) {
-        payMoney(payer.getName(), target.getName(), amount, commissionRatio);
+    public void payMoney(Player payer, Player target, int amount, TaxType tax) {
+        payMoney(payer.getName(), target.getName(), amount, tax);
     }
 
-    public void payMoney(String payerName, String targetName, int amount, double commissionRatio) {
-        if (isPayable(payerName, (int) (amount * commissionRatio))) {
-            reduceMoney(payerName, (int) (amount * commissionRatio));
+    public void payMoney(String payerName, String targetName, int amount, TaxType tax) {
+        if (isPayable(payerName, (int) (amount * tax.getRatio()))) {
+            reduceMoney(payerName, (int) (amount * tax.getRatio()));
             addMoney(targetName, amount);
         }
     }
@@ -154,6 +154,14 @@ public class MoneySAPI {
 
     public boolean isPayable(String playerName, int amount) {
         return getMoney(playerName) >= amount;
+    }
+
+    public boolean isPayable(Player player, int amount, TaxType tax) {
+        return isPayable(player.getName(), amount, tax);
+    }
+
+    public boolean isPayable(String playerName, int amount, TaxType tax) {
+        return getMoney(playerName) >= (amount * tax.getRatio());
     }
 
     public void setPublishStatus(Player player, boolean status) {
@@ -293,7 +301,7 @@ public class MoneySAPI {
     /* For MoneySAPI */
     protected void reduceMoney() {
         int[] ranks = {100000, 3000000, 5000000};
-        double[] rates = {TAXType.INCOME_LOWEST, TAXType.INCOME_LOW, TAXType.INCOME_MEDIUM};
+        TaxType[] ratios = {TaxType.INCOME_LOWEST, TaxType.INCOME_LOW, TaxType.INCOME_MEDIUM};
 
         ArrayList<String> arrayList = new ArrayList<>();
         for (int i = 0; i < ranks.length; i++) {
@@ -302,7 +310,7 @@ public class MoneySAPI {
             } catch (SQLException e) {
                 e.printStackTrace();
             }
-            executeReduceMoney(arrayList, rates[i]);
+            executeReduceMoney(arrayList, ratios[i].getRatio());
             arrayList.clear();
         }
     }
